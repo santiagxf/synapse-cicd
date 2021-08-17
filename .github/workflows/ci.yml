@@ -44,7 +44,7 @@ jobs:
 
       - name: Building data solution
         run: |
-          dotnet msbuild **/*.sqlproj \ 
+          dotnet msbuild AdventureWorks/*.sqlproj \ 
             /p:Configuration=Release \
             /p:OutputPath=build \
             /p:NETCoreTargetsPath=/usr/share/azuredatastudio/resources/app/extensions/mssql/sqltoolsservice/Linux/3.0.0-release.110 \ 
