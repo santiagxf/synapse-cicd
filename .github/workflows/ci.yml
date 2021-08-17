@@ -36,12 +36,8 @@ jobs:
           wget https://aka.ms/sqlpackage-linux -O sqlpackage-linux-x64.zip
           mkdir sqlpackage
           unzip sqlpackage-linux-x64.zip -d sqlpackage
-          echo "export PATH=\"\$PATH:$HOME/sqlpackage\"" >> ~/.bashrc
-          chmod a+x ~/sqlpackage/sqlpackage
-          source ~/.bashrc
 
       # Runs a set of commands using the runners shell
       - name: Run a multi-line script
         run: |
-          echo Add other actions to build,
-          echo test, and deploy your project.
+          sqlpackage/sqlpackage /action
