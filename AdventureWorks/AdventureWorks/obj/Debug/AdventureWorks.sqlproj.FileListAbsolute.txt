@@ -1,0 +1,8 @@
+c:\Users\fasantia\repos\synapse-cicd\AdventureWorks\AdventureWorks\bin\Debug\AdventureWorks.dacpac
+c:\Users\fasantia\repos\synapse-cicd\AdventureWorks\AdventureWorks\obj\Debug\AdventureWorks.sqlproj.AssemblyReference.cache
+c:\Users\fasantia\repos\synapse-cicd\AdventureWorks\AdventureWorks\obj\Debug\Model.xml
+c:\Users\fasantia\repos\synapse-cicd\AdventureWorks\AdventureWorks\obj\Debug\refactor.xml
+c:\Users\fasantia\repos\synapse-cicd\AdventureWorks\AdventureWorks\obj\Debug\postdeploy.sql
+c:\Users\fasantia\repos\synapse-cicd\AdventureWorks\AdventureWorks\obj\Debug\predeploy.sql
+c:\Users\fasantia\repos\synapse-cicd\AdventureWorks\AdventureWorks\obj\Debug\AdventureWorks.dll
+c:\Users\fasantia\repos\synapse-cicd\AdventureWorks\AdventureWorks\obj\Debug\AdventureWorks.pdb
