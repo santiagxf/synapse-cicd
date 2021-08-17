@@ -32,7 +32,7 @@ jobs:
 
       - name: Installing Data Tools
         run: |
-          sudo apt-get install libunwind8 libicu60
+          sudo apt-get install libunwind8 libicu66
           wget https://aka.ms/sqlpackage-linux -O sqlpackage-linux-x64.zip
           mkdir sqlpackage
           unzip sqlpackage-linux-x64.zip -d sqlpackage
