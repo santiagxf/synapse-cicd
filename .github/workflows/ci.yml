@@ -32,6 +32,7 @@ jobs:
 
       - name: Installing Data Tools
         run: |
+          dotnet add package Microsoft.Data.Tools.Msbuild --version 16.0.62004.28040
           sudo apt-get install libunwind8 libicu66
           wget https://aka.ms/sqlpackage-linux -O sqlpackage-linux-x64.zip
           mkdir sqlpackage
