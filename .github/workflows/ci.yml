@@ -40,7 +40,7 @@ jobs:
 
       - name: Building data solution
         run: |
-          find . -name *.sqlproj | dotnet msbuild /p:Configuration=Release /p:OutputPath=build
+          dotnet msbuild AdventureWorks/AdventureWorks.sqlproj /p:Configuration=Release /p:OutputPath=build
           
       - name: Verifying against target
         run: |
