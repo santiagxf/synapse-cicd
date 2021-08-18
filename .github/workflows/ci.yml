@@ -29,7 +29,7 @@ jobs:
         run: |
           wget https://dot.net/v1/dotnet-install.sh -O dotnet-install.sh \
             && chmod a+x dotnet-install.sh \
-            && ./dotnet-install.sh -c 5.0
+            && ./dotnet-install.sh -c 5.0 \
             && rm dotnet-install.sh
 
       - name: Installing Data Tools
