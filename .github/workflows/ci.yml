@@ -64,7 +64,13 @@ jobs:
       
       - name: Verifying proposed changes
         run: |
-          /opt/sqlpackage/sqlpackage /action:DeployReport /sourcefile:${ARTIFACTS_PATH}/${PACKAGE_FILE} /Profile:${PROFILE_PATH}/${ENVIRONMENT_PREFIX}.publish.xml /AccessToken:${SQL_TOKEN} /outputpath:${ARTIFACTS_PATH}/deployreport.xml
+          ls ${ARTIFACTS_PATH}
+          /opt/sqlpackage/sqlpackage \
+            /action:DeployReport \
+            /sourcefile:${ARTIFACTS_PATH}/${PACKAGE_FILE} \
+            /Profile:${PROFILE_PATH}/${ENVIRONMENT_PREFIX}.publish.xml \
+            /AccessToken:${SQL_TOKEN} \
+            /outputpath:${ARTIFACTS_PATH}/deployreport.xml
       
       - name: Publishing artifacts
         uses: actions/upload-artifact@v2
