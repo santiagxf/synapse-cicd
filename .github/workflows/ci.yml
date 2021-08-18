@@ -66,7 +66,7 @@ jobs:
         run: |
           /opt/sqlpackage/sqlpackage \
             /action:DeployReport \
-            /sourcefile:${ARTIFACTS_PATH}\${PACKAGE_FILE} \
-            /Profile:${PROFILE_PATH}\${ENVIRONMENT_PREFIX}.publish.xml \
+            /sourcefile:$PWD/${ARTIFACTS_PATH}\${PACKAGE_FILE} \
+            /Profile:$PWD/${PROFILE_PATH}\${ENVIRONMENT_PREFIX}.publish.xml \
             /AccessToken:${SQL_TOKEN} \
-            /outputpath:${ARTIFACTS_PATH}\deployreport.xml
+            /outputpath:$PWD/${ARTIFACTS_PATH}\deployreport.xml
