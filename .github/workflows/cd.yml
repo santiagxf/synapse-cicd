@@ -1,0 +1,62 @@
+# This is a basic workflow to help you get started with Actions
+
+name: CD
+
+# Controls when the workflow will run
+on:
+  workflow_run:
+    workflows: ["CI"]
+    types:
+      - completed
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    env:
+      ARTIFACT_NAME: build
+      ENVIRONMENT_PREFIX: dev
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: actions/download-artifact@v2
+        with:
+          name: ${{ env.ARTIFACT_NAME }}
+
+      - name: Installing SQL Data Tools
+        run: |
+          sudo apt-get install libunwind8
+          wget -progress=bar:force -q -O sqlpackage.zip \
+            https://aka.ms/sqlpackage-linux \
+            && unzip -qq sqlpackage.zip -d /opt/sqlpackage \
+            && chmod a+x /opt/sqlpackage/sqlpackage \
+            && rm sqlpackage.zip
+
+      - name: Logining in into Azure
+        uses: Azure/login@v1
+        with:
+          creds: ${{secrets.AZURE_CREDENTIALS}}
+          enable-AzPSSession: true
+
+      - name: Adquiring access token
+        shell: pwsh
+        run: |
+          Set-PSRepository PSGallery -InstallationPolicy Trusted
+          Install-Module -Name Az.Accounts -AllowClobber -Force
+          $context = Get-AzContext
+          $sqlToken = (Get-AzAccessToken -ResourceUrl "https://database.windows.net" -DefaultProfile $context).Token
+          
+          echo "SQL_TOKEN=$sqlToken" | Out-File -FilePath $Env:GITHUB_ENV -Encoding utf-8 -Append
+      
+      - name: Deploying changes
+        run: |
+          EXPORT PACKAGE_NAME=$(find ${{ env.ARTIFACT_NAME }} -name '*.dacpac' -exec basename {} \;)"
+          /opt/sqlpackage/sqlpackage \
+            /action:Publish \
+            /sourcefile:$PWD/${{ env.ARTIFACT_NAME }}/$PACKAGE_NAME \
+            /Profile:${{ github.workspace }}/${PROFILE_PATH}/${ENVIRONMENT_PREFIX}.profile.xml \
+            /AccessToken:${SQL_TOKEN} \

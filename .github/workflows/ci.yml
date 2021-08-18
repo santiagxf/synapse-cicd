@@ -71,13 +71,13 @@ jobs:
             /AccessToken:${SQL_TOKEN} \
             /outputpath:$PWD/${ARTIFACTS_PATH}/deployreport.xml
       
-      - name: Verifying proposed changes
+      - name: Validating proposed changes
         shell: pwsh
         run: |
-          ${{ github.workspace }}/scripts/Parse-SqlProfileReport.ps1 -Environment "${{ env.ENVIRONMENT_PREFIX }}" -SqlPackageReport "$PWD/${{ env.ARTIFACTS_PATH }}/deployreport.xml"
+          ${{ github.workspace }}/scripts/Parse-SqlProfileReport.ps1 -Environment "${{ env.ENVIRONMENT_PREFIX }}" -SqlPackageReport "$PWD/${{ env.ARTIFACTS_PATH }}/deployreport.xml" -OutputFilePath "${{ env.ARTIFACTS_PATH }}/deployreport.MD"
 
       - name: Publishing artifacts
         uses: actions/upload-artifact@v2
         with:
-          name: dacpac
+          name: build
           path: ${{ env.ARTIFACTS_PATH }}/*
