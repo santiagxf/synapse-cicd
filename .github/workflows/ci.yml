@@ -67,7 +67,7 @@ jobs:
           /opt/sqlpackage/sqlpackage \
             /action:DeployReport \
             /sourcefile:$PWD/${ARTIFACTS_PATH}/${PACKAGE_NAME} \
-            /Profile:${{ github.workspace }}/${PROFILE_PATH}/${ENVIRONMENT_PREFIX}.publish.xml \
+            /Profile:${{ github.workspace }}/${PROFILE_PATH}/${ENVIRONMENT_PREFIX}.profile.xml \
             /AccessToken:${SQL_TOKEN} \
             /outputpath:$PWD/${ARTIFACTS_PATH}/deployreport.xml
       
