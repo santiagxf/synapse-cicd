@@ -43,4 +43,4 @@ jobs:
           
       - name: Verifying against target
         run: |
-          ./sqlpackage/sqlpackage /help
+          /opt/sqlpackage/sqlpackage /help
