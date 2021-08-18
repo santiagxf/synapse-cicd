@@ -66,7 +66,7 @@ jobs:
         run: |
           /opt/sqlpackage/sqlpackage \
             /action:DeployReport \
-            /sourcefile:build/AdventureWorks.dacpac \
+            /sourcefile:$PWD/${ARTIFACTS_PATH}/${PACKAGE_NAME} \
             /Profile:${PROFILE_PATH}/${ENVIRONMENT_PREFIX}.publish.xml \
             /AccessToken:${SQL_TOKEN} \
             /outputpath:build/deployreport.xml
