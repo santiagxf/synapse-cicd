@@ -45,9 +45,9 @@ jobs:
 
       - name: Logining in into Azure
         uses: Azure/login@v1
-          with:
-            creds: ${{secrets.AZURE_CREDENTIALS}}
-            enable-AzPSSession: true
+        with:
+          creds: ${{secrets.AZURE_CREDENTIALS}}
+          enable-AzPSSession: true
 
       - name: Logining in into target database 
         uses: azure/powershell@v1
