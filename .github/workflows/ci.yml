@@ -75,5 +75,4 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: dacpac
-          path: |
-            $PWD/${ARTIFACTS_PATH}/${PACKAGE_NAME}
+          path: $PWD/${ARTIFACTS_PATH}/*
