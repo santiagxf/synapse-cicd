@@ -67,9 +67,9 @@ jobs:
           /opt/sqlpackage/sqlpackage \
             /action:DeployReport \
             /sourcefile:$PWD/${ARTIFACTS_PATH}/${PACKAGE_NAME} \
-            /Profile:${{ github.repository }}/${PROFILE_PATH}/${ENVIRONMENT_PREFIX}.publish.xml \
+            /Profile:${{ github.workspace }}/${PROFILE_PATH}/${ENVIRONMENT_PREFIX}.publish.xml \
             /AccessToken:${SQL_TOKEN} \
-            /outputpath:build/deployreport.xml
+            /outputpath:$PWD/${ARTIFACTS_PATH}/deployreport.xml
       
       - name: Publishing artifacts
         uses: actions/upload-artifact@v2
