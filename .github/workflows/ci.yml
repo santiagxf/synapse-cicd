@@ -62,7 +62,7 @@ jobs:
           
           echo "SQL_TOKEN=$sqlToken" | Out-File -FilePath $Env:GITHUB_ENV -Encoding utf-8 -Append
       
-      - name: Verifying proposed changes
+      - name: Identifying proposed changes
         run: |
           /opt/sqlpackage/sqlpackage \
             /action:DeployReport \
@@ -70,11 +70,14 @@ jobs:
             /Profile:${{ github.workspace }}/${PROFILE_PATH}/${ENVIRONMENT_PREFIX}.profile.xml \
             /AccessToken:${SQL_TOKEN} \
             /outputpath:$PWD/${ARTIFACTS_PATH}/deployreport.xml
-          
-          ls ${ARTIFACTS_PATH}
+      
+      - name: Verifying proposed changes
+        shell: pwsh
+        run: |
+          ${{ github.workspace }}/scripts/Parse-SqlProfileReport.ps1 -Environment ${ENVIRONMENT_PREFIX} -SqlPackageReport $PWD/${ARTIFACTS_PATH}/deployreport.xml
 
       - name: Publishing artifacts
         uses: actions/upload-artifact@v2
         with:
           name: dacpac
-          path: ${ARTIFACTS_PATH}/*
+          path: build/*
