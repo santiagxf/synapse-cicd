@@ -43,7 +43,9 @@ jobs:
             && unzip -qq sqlpackage.zip -d /opt/sqlpackage \
             && chmod a+x /opt/sqlpackage/sqlpackage \
             && rm sqlpackage.zip
-          ls /usr/share/azuredatastudio/resources/app/extensions/mssql/sqltoolsservice/Linux
+          sudo apt update
+          sudo apt upgrade
+          sudo apt --fix-broken install
 
       - name: Building data solution
         run: |
