@@ -20,6 +20,8 @@ jobs:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
+    env:
+      artifactsPath: build
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
@@ -27,6 +29,7 @@ jobs:
 
       - name: Installing Data Tools
         run: |
+          sudo apt-get install libunwind8
           wget -progress=bar:force -q -O azuredatastudio-linux.deb https://go.microsoft.com/fwlink/?linkid=2168339 \
             && sudo dpkg -i azuredatastudio-linux.deb \
             && rm azuredatastudio-linux.deb
@@ -35,12 +38,17 @@ jobs:
             && unzip -qq sqlpackage.zip -d /opt/sqlpackage \
             && chmod a+x /opt/sqlpackage/sqlpackage \
             && rm sqlpackage.zip
-          sudo apt-get install libunwind8
 
       - name: Building data solution
         run: |
-          dotnet build **/*.sqlproj /p:NetCoreBuild=true /p:NETCoreTargetsPath=/usr/share/azuredatastudio/resources/app/extensions/mssql/sqltoolsservice/Linux/3.0.0-release.110 /p:Configuration=Release
-          
-      - name: Verifying against target
+          dotnet build **/*.sqlproj /p:NetCoreBuild=true /p:NETCoreTargetsPath=/usr/share/azuredatastudio/resources/app/extensions/mssql/sqltoolsservice/Linux/3.0.0-release.110 /p:Configuration=Release /p:OutputPath=${artifactsPath}
+
+      - name: Logining in into Azure
+        uses: Azure/login@v1
+
+      - name: Logining in into target database 
+        uses: azure/powershell@v1
         run: |
-          /opt/sqlpackage/sqlpackage /help
+          $context = [Microsoft.Azure.Commands.Common.Authentication.Abstractions.AzureRmProfileProvider]::Instance.Profile.DefaultContext
+          $sqlToken = [Microsoft.Azure.Commands.Common.Authentication.AzureSession]::Instance.AuthenticationFactory.Authenticate($context.Account, $context.Environment, $context.Tenant.Id.ToString(), $null, [Microsoft.Azure.Commands.Common.Authentication.ShowDialog]::Never, $null, "https://database.windows.net").AccessToken
+
