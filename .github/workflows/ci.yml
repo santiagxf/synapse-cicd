@@ -43,7 +43,7 @@ jobs:
 
       - name: Building DACPAC
         run: |
-          dotnet build **/*.sqlproj /p:NetCoreBuild=true /p:NETCoreTargetsPath=/usr/share/azuredatastudio/resources/app/extensions/mssql/sqltoolsservice/Linux/3.0.0-release.110 /p:Configuration=Release /p:OutputPath=$PWD/${ARTIFACTS_PATH}
+          dotnet build **/*.sqlproj /p:NetCoreBuild=true /p:NETCoreTargetsPath=/usr/share/azuredatastudio/resources/app/extensions/mssql/sqltoolsservice/Linux/3.0.0-release.110 /p:Configuration=Release /p:OutputPath=${ARTIFACTS_PATH}
           echo "PACKAGE_NAME=$(find ${ARTIFACTS_PATH} -name '*.dacpac' -exec basename {} \;)" >> $GITHUB_ENV
 
       - name: Logining in into Azure
@@ -67,9 +67,9 @@ jobs:
           /opt/sqlpackage/sqlpackage \
             /action:DeployReport \
             /sourcefile:build/AdventureWorks.dacpac \
-            /Profile:$PWD/${PROFILE_PATH}/${ENVIRONMENT_PREFIX}.publish.xml \
+            /Profile:${PROFILE_PATH}/${ENVIRONMENT_PREFIX}.publish.xml \
             /AccessToken:${SQL_TOKEN} \
-            /outputpath:$PWD/${ARTIFACTS_PATH}/deployreport.xml
+            /outputpath:${ARTIFACTS_PATH}/deployreport.xml
       
       - name: Publishing artifacts
         uses: actions/upload-artifact@v2
