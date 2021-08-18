@@ -27,7 +27,7 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
 
-      - name: Installing Data Tools
+      - name: Installing SQL Data Tools
         run: |
           sudo apt-get install libunwind8
           wget -progress=bar:force -q -O azuredatastudio-linux.deb https://go.microsoft.com/fwlink/?linkid=2168339 \
@@ -39,7 +39,7 @@ jobs:
             && chmod a+x /opt/sqlpackage/sqlpackage \
             && rm sqlpackage.zip
 
-      - name: Building data solution
+      - name: Building DACPAC
         run: |
           dotnet build **/*.sqlproj /p:NetCoreBuild=true /p:NETCoreTargetsPath=/usr/share/azuredatastudio/resources/app/extensions/mssql/sqltoolsservice/Linux/3.0.0-release.110 /p:Configuration=Release /p:OutputPath=${artifactsPath}
 
@@ -54,6 +54,6 @@ jobs:
         with:
           azPSVersion: '3.1.0'
           inlineScript: |
-            $context = [Microsoft.Azure.Commands.Common.Authentication.Abstractions.AzureRmProfileProvider]::Instance.Profile.DefaultContext
+            $profile = Invoke-Expression "[Microsoft.Azure.Commands.Common.Authentication.Abstractions.AzureRmProfileProvider]::Instance.Profile.DefaultContext"
             $sqlToken = [Microsoft.Azure.Commands.Common.Authentication.AzureSession]::Instance.AuthenticationFactory.Authenticate($context.Account, $context.Environment, $context.Tenant.Id.ToString(), $null, [Microsoft.Azure.Commands.Common.Authentication.ShowDialog]::Never, $null, "https://database.windows.net").AccessToken
 
