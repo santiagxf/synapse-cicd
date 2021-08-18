@@ -76,5 +76,5 @@ jobs:
         with:
           name: dacpac
           path: |
-            $PWD/${ARTIFACTS_PATH}/${PACKAGE_FILE}
+            $PWD/${ARTIFACTS_PATH}/${PACKAGE_NAME}
             $PWD/${ARTIFACTS_PATH}/deployreport.xml
