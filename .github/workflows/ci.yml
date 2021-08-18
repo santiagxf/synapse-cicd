@@ -74,7 +74,7 @@ jobs:
       - name: Verifying proposed changes
         shell: pwsh
         run: |
-          ${{ github.workspace }}/scripts/Parse-SqlProfileReport.ps1 -Environment "${ENVIRONMENT_PREFIX}" -SqlPackageReport "$PWD/${ARTIFACTS_PATH}/deployreport.xml"
+          ${{ github.workspace }}/scripts/Parse-SqlProfileReport.ps1 -Environment "dev" -SqlPackageReport "$PWD/${ARTIFACTS_PATH}/deployreport.xml"
 
       - name: Publishing artifacts
         uses: actions/upload-artifact@v2
