@@ -64,10 +64,9 @@ jobs:
       
       - name: Verifying proposed changes
         run: |
-          ls ${ARTIFACTS_PATH}
           /opt/sqlpackage/sqlpackage \
             /action:DeployReport \
-            /sourcefile:$PWD/${ARTIFACTS_PATH}/${PACKAGE_FILE} \
+            /sourcefile:build/AdventureWorks.dacpac \
             /Profile:$PWD/${PROFILE_PATH}/${ENVIRONMENT_PREFIX}.publish.xml \
             /AccessToken:${SQL_TOKEN} \
             /outputpath:$PWD/${ARTIFACTS_PATH}/deployreport.xml
