@@ -43,6 +43,7 @@ jobs:
             && unzip -qq sqlpackage.zip -d /opt/sqlpackage \
             && chmod a+x /opt/sqlpackage/sqlpackage \
             && rm sqlpackage.zip
+          ls /usr/share/azuredatastudio/resources/app/extensions/mssql/sqltoolsservice/Linux
 
       - name: Building data solution
         run: |
