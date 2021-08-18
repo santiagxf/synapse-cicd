@@ -64,9 +64,6 @@ jobs:
       
       - name: Verifying proposed changes
         run: |
-          /opt/sqlpackage/sqlpackage \
-            /action:DeployReport \
-            /sourcefile:$PWD/${ARTIFACTS_PATH}\${PACKAGE_FILE} \
-            /Profile:$PWD/${PROFILE_PATH}\${ENVIRONMENT_PREFIX}.publish.xml \
-            /AccessToken:${SQL_TOKEN} \
-            /outputpath:$PWD/${ARTIFACTS_PATH}\deployreport.xml
+          /opt/sqlpackage/sqlpackage /action:DeployReport /sourcefile:$PWD/${ARTIFACTS_PATH}\${PACKAGE_FILE} /Profile:$PWD/${PROFILE_PATH}\${ENVIRONMENT_PREFIX}.publish.xml /AccessToken:${SQL_TOKEN} /outputpath:$PWD/${ARTIFACTS_PATH}\deployreport.xml
+      
+
