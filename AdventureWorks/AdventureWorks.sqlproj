@@ -80,8 +80,6 @@
     <Build Include="dbo\Views\SalesByCustomer.sql" />
     <Build Include="dbo\Views\SalesByCategory.sql" />
     <Build Include="dbo\Views\AggregateSales.sql" />
-    <Build Include="dbo\Tables\t2.sql" />
-    <Build Include="dbo\Tables\t1.sql" />
     <Build Include="dbo\Tables\ProspectiveBuyer.sql" />
     <Build Include="dbo\Tables\FactSurveyResponse.sql" />
     <Build Include="dbo\Tables\FactSalesQuota.sql" />

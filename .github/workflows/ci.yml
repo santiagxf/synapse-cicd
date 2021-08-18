@@ -46,7 +46,7 @@ jobs:
 
       - name: Building data solution
         run: |
-          dotnet msbuild **/*.sqlproj /p:NetCoreBuild=true /p:NETCoreTargetsPath=/usr/share/azuredatastudio/resources/app/extensions/mssql/sqltoolsservice/Linux/3.0.0-release.110
+          dotnet msbuild **/*.sqlproj /p:NetCoreBuild=true /p:NETCoreTargetsPath=/usr/share/azuredatastudio/resources/app/extensions/mssql/sqltoolsservice/Linux/3.0.0-release.110 /p:Configuration=Release
           
       - name: Verifying against target
         run: |
