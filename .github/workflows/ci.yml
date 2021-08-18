@@ -69,7 +69,7 @@ jobs:
             /sourcefile:build/AdventureWorks.dacpac \
             /Profile:${PROFILE_PATH}/${ENVIRONMENT_PREFIX}.publish.xml \
             /AccessToken:${SQL_TOKEN} \
-            /outputpath:${ARTIFACTS_PATH}/deployreport.xml
+            /outputpath:build/deployreport.xml
       
       - name: Publishing artifacts
         uses: actions/upload-artifact@v2
