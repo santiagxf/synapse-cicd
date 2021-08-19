@@ -54,6 +54,7 @@ if ($issues) {
 }
 else {
     Add-Content -Path $OutputFilePath -Value " - No data issues where detected"
+    Write-Host "::debug::No data issues where detected"
 }
 
 
@@ -73,6 +74,7 @@ if ($alerts) {
 }
 else {
     Add-Content -Path $OutputFilePath -Value " - No harmul operations were detected in the solution"
+    Write-Host "::debug::No harmul operations were detected in the solution"
 }
 
 Write-Debug 'Reading operations'
@@ -93,4 +95,5 @@ if ($operations){
 }
 else {
     Add-Content -Path $OutputFilePath -Value " - No changes will be introduced"
+    Write-Host "::debug::No changes will be introduced"
 }
