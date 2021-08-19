@@ -19,8 +19,10 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - uses: actions/download-artifact@v2
+      - name: Getting packages to deploy
+        uses: dawidd6/action-download-artifact@v2
         with:
+          workflow: ci.yml
           name: ${{ env.ARTIFACT_NAME }}
 
       - name: Installing SQL Data Tools
