@@ -41,7 +41,7 @@ jobs:
 
       - name: Building DACPAC
         run: |
-          dotnet build **/*.sqlproj /p:NetCoreBuild=true /p:NETCoreTargetsPath=/usr/share/azuredatastudio/resources/app/extensions/mssql/sqltoolsservice/Linux/3.0.0-release.110 /p:Configuration=Release /p:OutputPath=$PWD/${ARTIFACTS_PATH}
+          dotnet build src/**/*.sqlproj /p:NetCoreBuild=true /p:NETCoreTargetsPath=/usr/share/azuredatastudio/resources/app/extensions/mssql/sqltoolsservice/Linux/3.0.0-release.110 /p:Configuration=Release /p:OutputPath=$PWD/${ARTIFACTS_PATH}
           echo "PACKAGE_NAME=$(find ${ARTIFACTS_PATH} -name '*.dacpac' -exec basename {} \;)" >> $GITHUB_ENV
 
       - name: Logining in into Azure
