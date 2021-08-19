@@ -24,6 +24,7 @@ jobs:
         with:
           workflow: ci.yml
           name: ${{ env.ARTIFACT_NAME }}
+          path: ${{ env.ARTIFACT_NAME }}
 
       - name: Installing SQL Data Tools
         run: |
