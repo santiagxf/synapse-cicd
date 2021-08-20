@@ -5,7 +5,8 @@ param
     [String]$Environment,
     [Parameter(Mandatory)]
     [String]$SqlPackageReport,
-    [String]$OutputFilePath  = "sql_package_summary.MD"
+    [String]$OutputFilePath  = "sql_package_summary.MD",
+    [bool]$HaltOnDataIssues = $true
 )
 
 function Write-TableOperation {
@@ -96,4 +97,9 @@ if ($operations){
 else {
     Add-Content -Path $OutputFilePath -Value " - No changes will be introduced"
     Write-Host "::debug::No changes will be introduced"
+}
+
+if ($issues -And $haltOnDataIssues)
+{
+    throw "Parser found errors that prevents deployment to continue." 
 }
