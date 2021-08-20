@@ -72,6 +72,8 @@ jobs:
 
       - name: Deploying changes
         run: |
+          PACKAGE_NAME=$(find ${{ env.ARTIFACT_NAME }} -name '*.dacpac' -exec basename {} \;)
+          
           /opt/sqlpackage/sqlpackage \
             /action:Publish \
             /sourcefile:$PWD/${{ env.ARTIFACT_NAME }}/$PACKAGE_NAME \
