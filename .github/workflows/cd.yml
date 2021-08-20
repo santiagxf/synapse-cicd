@@ -10,7 +10,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  on-success:
+  publish:
     runs-on: ubuntu-latest
 
     env:
