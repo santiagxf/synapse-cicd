@@ -49,7 +49,7 @@ jobs:
           echo "PACKAGE_NAME=$(find ${ARTIFACTS_PATH} -name '*.dacpac' -exec basename {} \;)" >> $GITHUB_ENV
           echo "::debug::Package built with name: $PACKAGE_NAME"
 
-      - name: Logining in into Azure
+      - name: Logining into Azure
         uses: Azure/login@v1
         with:
           creds: ${{secrets.AZURE_CREDENTIALS}}
