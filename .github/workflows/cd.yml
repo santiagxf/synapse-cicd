@@ -10,7 +10,8 @@ on:
   workflow_dispatch:
 
 jobs:
-  on-success:
+  deployment:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
 
     env:

@@ -10,11 +10,11 @@ This CI/CD implementation relies on the use of [SqlPackage](https://docs.microso
 
 You can use database projects to create new databases and to update existing databases enabling you to apply version control and project management techniques to your database development efforts in much the same way that you apply those techniques to managed or native code. You can help your development team manage changes to databases and database servers by creating a database project, or a server project and putting it under version control. Members of your team can then check out files to make, build, and test changes in an isolated development environment, or sandbox, before sharing them with the team. To help ensure code quality, your team can finish and test all changes for a particular release of the database in a staging environment before you deploy the changes into production.
 
-### About SqlPackate
+### About SqlPackage
 
 [SqlPackage.exe](https://docs.microsoft.com/en-us/sql/tools/sqlpackage/) is a command-line utility that automates validation and deployment of database projects for SQL Server, Azure SQL Database and Azure Synapse. It provides a convenient way to administer the evolution of the schema of a database. `SqlPackage` is available for both Windows and Linux systems. 
 
-## CI and CD workflows
+## CI/CD workflows
 
 This repository contains 2 workflows:
  - **Synapse-CI:** A workflow for building a database project and validate the database schema against an integration database server. (usually a DEV environment). 3 outputs are generated: a DACPAC containing the desired database schema, a SQL file containing the SQL instructions to create the database and a MD file which all the data issues, warnings and changes that will be applied into the target database.
