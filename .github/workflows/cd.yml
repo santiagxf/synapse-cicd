@@ -53,9 +53,24 @@ jobs:
           
           echo "SQL_TOKEN=$sqlToken" | Out-File -FilePath $Env:GITHUB_ENV -Encoding utf-8 -Append
       
-      - name: Deploying changes
+      - name: Identifying proposed changes
         run: |
           PACKAGE_NAME=$(find ${{ env.ARTIFACT_NAME }} -name '*.dacpac' -exec basename {} \;)
+
+          /opt/sqlpackage/sqlpackage \
+            /action:DeployReport \
+            /sourcefile:$PWD/${ARTIFACT_NAME}/${PACKAGE_NAME} \
+            /Profile:${{ github.workspace }}/${PROFILE_PATH}/${ENVIRONMENT_PREFIX}.profile.xml \
+            /AccessToken:${SQL_TOKEN} \
+            /outputpath:$PWD/${ARTIFACT_NAME}/deployreport.${ENVIRONMENT_PREFIX}.xml
+      
+      - name: Validating proposed changes
+        shell: pwsh
+        run: |
+          ${{ github.workspace }}/scripts/Parse-SqlProfileReport.ps1 -Environment "${{ env.ENVIRONMENT_PREFIX }}" -SqlPackageReport "$PWD/${{ env.ARTIFACT_NAME }}/deployreport.xml" -OutputFilePath "${{ env.ARTIFACT_NAME }}/deployreport.${{ env.ENVIRONMENT_PREFIX }}.MD"
+
+      - name: Deploying changes
+        run: |
           /opt/sqlpackage/sqlpackage \
             /action:Publish \
             /sourcefile:$PWD/${{ env.ARTIFACT_NAME }}/$PACKAGE_NAME \
