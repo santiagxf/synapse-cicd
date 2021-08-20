@@ -5,12 +5,12 @@ on:
     workflows: ["CI"]
     branches: [main]
     types:
-      - success
+      - completed
 
   workflow_dispatch:
 
 jobs:
-  publish:
+  on-success:
     runs-on: ubuntu-latest
 
     env:
