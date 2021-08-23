@@ -27,4 +27,4 @@ runs:
           -Environment "${{ inputs.environment }}"  `
           -SqlPackageReport "${{ inputs.sqlpackage-report }}"  `
           -OutputFilePath "${{ inputs.outputpath }}/${{ inputs.outputfile }}"  `
-          -HaltOnDataIssues ${{ inputs.haltonerrors }}
+          -HaltOnDataIssues ${{ '$' }}${{ inputs.haltonerrors }}
