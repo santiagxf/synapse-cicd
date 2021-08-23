@@ -2,7 +2,7 @@ name: 'Running SqlPackage command'
 description: 'Runs a SqlPackage command'
 inputs:
   action:
-    description: 'Action parameter to run with SqlPackage. Supported values: Publish, DeployReport'
+    description: 'Action parameter to run with SqlPackage. Supported values: Publish, DeployReport, DriftReport, Script'
     required: true
   sourcepath:
     description: 'The path where to look for the DACPAC file'
@@ -46,15 +46,16 @@ runs:
 
         if [[ '${{ inputs.action }}' == 'Publish' ]]; then
           /opt/sqlpackage/sqlpackage \
-            /action:${{ inputs.action }} \
-            /sourcefile:${{ inputs.sourcepath }}/${PACKAGE_NAME} \
+            /Action:${{ inputs.action }} \
+            /SourceFile:${{ inputs.sourcepath }}/${PACKAGE_NAME} \
             /Profile:${{ inputs.profile }} \
             /AccessToken:${{ inputs.authtoken }}
         else
           /opt/sqlpackage/sqlpackage \
-            /action:${{ inputs.action }} \
-            /sourcefile:${{ inputs.sourcepath }}/${PACKAGE_NAME} \
+            /Action:${{ inputs.action }} \
+            /SourceFile:${{ inputs.sourcepath }}/${PACKAGE_NAME} \
             /Profile:${{ inputs.profile }} \
             /AccessToken:${{ inputs.authtoken }} \
-            /outputpath:${{ inputs.outputpath }}/${{ inputs.outputfile }}
+            /OutputPath:${{ inputs.outputpath }}/${{ inputs.outputfile }} \
+            /OverwriteFiles:True
         fi

@@ -29,7 +29,7 @@ runs:
         Set-PSRepository PSGallery -InstallationPolicy Trusted
         Install-Module -Name Az.Accounts -AllowClobber -Force
         $context = Get-AzContext
-        $resourceToken = (Get-AzAccessToken -ResourceUrl ${{ inputs.resource-url }} -ResourceTypeName ${{ inputs.resource-type-name }} -DefaultProfile $context).Token
+        $resourceToken = (Get-AzAccessToken -ResourceUrl '${{ inputs.resource-url }}' -ResourceTypeName '${{ inputs.resource-type-name }}' -DefaultProfile $context).Token
         
         write-host "::debug::Set the token variable to value $resourceToken"
         write-host "::set-output name=token::$resourceToken"
