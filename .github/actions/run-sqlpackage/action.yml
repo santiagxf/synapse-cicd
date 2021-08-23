@@ -23,14 +23,17 @@ runs:
   using: "composite"
   steps:
     - name: Installing SQL Data Tools
-      if: ${{ hashFiles('/opt/sqlpackage/sqlpackage') == '' }}
       run: |
-        sudo apt-get install libunwind8
-        wget -progress=bar:force -q -O sqlpackage.zip \
-          https://aka.ms/sqlpackage-linux \
-          && unzip -qq sqlpackage.zip -d /opt/sqlpackage \
-          && chmod a+x /opt/sqlpackage/sqlpackage \
-          && rm sqlpackage.zip
+        if test -f "/opt/sqlpackage/sqlpackage"; then
+          echo "::debug::SqlPackage already installed in the context"
+        else
+          sudo apt-get install libunwind8
+          wget -progress=bar:force -q -O sqlpackage.zip \
+            https://aka.ms/sqlpackage-linux \
+            && unzip -qq sqlpackage.zip -d /opt/sqlpackage \
+            && chmod a+x /opt/sqlpackage/sqlpackage \
+            && rm sqlpackage.zip
+        fi
 
     - id: adquire-token
       name: Adquiring access token
