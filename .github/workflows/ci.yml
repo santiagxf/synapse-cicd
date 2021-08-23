@@ -57,14 +57,15 @@ jobs:
         with:
           creds: ${{secrets.AZURE_CREDENTIALS}}
       
-      - name: Identifying proposed changes
-        run: |
-          /opt/sqlpackage/sqlpackage \
-            /action:DeployReport \
-            /sourcefile:$PWD/${ARTIFACTS_PATH}/${PACKAGE_NAME} \
-            /Profile:${{ github.workspace }}/${PROFILE_PATH}/${ENVIRONMENT_PREFIX}.profile.xml \
-            /AccessToken:${{ steps.sql-login.outputs.token }} \
-            /outputpath:$PWD/${ARTIFACTS_PATH}/deployreport.xml
+      - id: deploy-report
+        name: Identifying proposed changes
+        uses: ./.github/actions/run-sqlpackage
+        with:
+          action: 'DeployReport'
+          sourcepath: $PWD/${ARTIFACTS_PATH}
+          outputpath: $PWD/${ARTIFACTS_PATH}
+          profile: ${{ github.workspace }}/${PROFILE_PATH}/${ENVIRONMENT_PREFIX}.profile.xml
+          authtoken: ${{ steps.sql-login.outputs.token }}
       
       - name: Validating proposed changes
         shell: pwsh

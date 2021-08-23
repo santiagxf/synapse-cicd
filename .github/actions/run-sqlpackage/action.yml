@@ -1,0 +1,57 @@
+name: 'Running SqlPackage command'
+description: 'Runs a SqlPackage command'
+inputs:
+  action:
+    description: 'Action parameter to run with SqlPackage'
+    required: true
+  sourcepath:
+    description: 'The path where to look for the DACPAC file'
+    required: true
+  profile:
+    description: 'The profile path to use during the execution. It has to be an xml file'
+    required: true
+  authtoken:
+    description: 'The authentication token used to connect to the database, if credentials not indicated in the connection string'
+    required: true
+  outputpath:
+    description: 'The output folder where assets will be generated if any'
+    required: false
+  outputfile:
+    description: 'The output file name'
+    default: 'deployreport.xml' 
+runs:
+  using: "composite"
+  steps:
+    - name: Installing SQL Data Tools
+      if: ${{ hashFiles('/opt/sqlpackage/sqlpackage') == '' }}
+      run: |
+        sudo apt-get install libunwind8
+        wget -progress=bar:force -q -O sqlpackage.zip \
+          https://aka.ms/sqlpackage-linux \
+          && unzip -qq sqlpackage.zip -d /opt/sqlpackage \
+          && chmod a+x /opt/sqlpackage/sqlpackage \
+          && rm sqlpackage.zip
+
+    - id: adquire-token
+      name: Adquiring access token
+      shell: pwsh
+      run: |
+        Set-PSRepository PSGallery -InstallationPolicy Trusted
+        Install-Module -Name Az.Accounts -AllowClobber -Force
+        $context = Get-AzContext
+        $sqlToken = (Get-AzAccessToken -ResourceUrl "https://database.windows.net" -DefaultProfile $context).Token
+        
+        write-host "::debug::Set the token variable to value $sqlToken"
+        write-host "::set-output name=token::$sqlToken"
+
+    - id: sqlpackage
+      name: Identifying proposed changes
+      run: |
+        PACKAGE_NAME=$(find ${{ inputs.sourcepath }} -name '*.dacpac' -exec basename {} \;)
+
+        /opt/sqlpackage/sqlpackage \
+          /action:${{ inputs.action }} \
+          /sourcefile:$PWD/${{ inputs.sourcepath }}/${PACKAGE_NAME} \
+          /Profile:${{ inputs.profile }} \
+          /AccessToken:${{ inputs.authtoken }} \
+          /outputfile:$PWD/${{ inputs.outputpath }}/${{ inputs.outputfile }}
