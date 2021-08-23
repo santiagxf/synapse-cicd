@@ -31,7 +31,7 @@ runs:
         fi
 
     - id: dotnet-build
-      name: Identifying proposed changes
+      name: Building solution
       shell: bash
       run: |
         dotnet build ${{ inputs.solution }} \
@@ -40,6 +40,6 @@ runs:
           /p:Configuration=${{ inputs.configuration }} \
           /p:OutputPath=${{ inputs.outputpath }}
         
-        PACKAGE_NAME=$(find ${ARTIFACTS_PATH} -name '*.dacpac' -exec basename {} \;
+        PACKAGE_NAME=$(find ${ARTIFACTS_PATH} -name '*.dacpac' -exec basename {} \;)
         echo "::debug::Package built with name: $PACKAGE_NAME"
         echo "::set-output name=packagename::$PACKAGE_NAME"
