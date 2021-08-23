@@ -50,7 +50,7 @@ runs:
             /action:${{ inputs.action }} \
             /sourcefile:${{ inputs.sourcepath }}/${PACKAGE_NAME} \
             /Profile:${{ inputs.profile }} \
-            /AccessToken:${{ inputs.authtoken }} \
+            /AccessToken:${{ inputs.authtoken }}
         else
           /opt/sqlpackage/sqlpackage \
             /action:${{ inputs.action }} \
