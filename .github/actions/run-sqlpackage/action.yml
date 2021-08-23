@@ -2,7 +2,7 @@ name: 'Running SqlPackage command'
 description: 'Runs a SqlPackage command'
 inputs:
   action:
-    description: 'Action parameter to run with SqlPackage'
+    description: 'Action parameter to run with SqlPackage. Supported values: Publish, DeployReport'
     required: true
   sourcepath:
     description: 'The path where to look for the DACPAC file'

@@ -5,7 +5,7 @@ inputs:
     description: 'Azure credentials for the service principal to log in'
     required: true
   resource-url:
-    description: 'Resource url for that you're requesting token'
+    description: 'Resource url for that you are requesting token'
     required: true
   resource-type-name:
     description: 'Optional resouce type name, supported values: AadGraph, AnalysisServices, Arm, Attestation, Batch, DataLake, KeyVault, OperationalInsights, ResourceManager, Storage, Synapse. Default value is Arm if not specified.'
