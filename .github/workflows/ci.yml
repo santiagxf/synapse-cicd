@@ -29,33 +29,20 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Installing SQL Data Tools
-        run: |
-          sudo apt-get install libunwind8
-          wget -progress=bar:force -q -O azuredatastudio-linux.deb https://go.microsoft.com/fwlink/?linkid=2168339 \
-            && sudo dpkg -i azuredatastudio-linux.deb \
-            && rm azuredatastudio-linux.deb
-          wget -progress=bar:force -q -O sqlpackage.zip \
-            https://aka.ms/sqlpackage-linux \
-            && unzip -qq sqlpackage.zip -d /opt/sqlpackage \
-            && chmod a+x /opt/sqlpackage/sqlpackage \
-            && rm sqlpackage.zip
-
-      - name: Building DACPAC
-        run: |
-          dotnet build src/**/*.sqlproj \
-            /p:NetCoreBuild=true \
-            /p:NETCoreTargetsPath=/usr/share/azuredatastudio/resources/app/extensions/mssql/sqltoolsservice/Linux/3.0.0-release.110 \
-            /p:Configuration=Release \
-            /p:OutputPath=$PWD/${ARTIFACTS_PATH}
-          echo "PACKAGE_NAME=$(find ${ARTIFACTS_PATH} -name '*.dacpac' -exec basename {} \;)" >> $GITHUB_ENV
-          echo "::debug::Package built with name: $PACKAGE_NAME"
-
+      - id: dotnet-build
+        name: Building DACPAC
+        uses: ./.github/actions/dotnet-data-build
+        with:
+          configuration: 'Release'
+          solution: src/**/*.sqlproj
+          outputpath: $PWD/${ARTIFACTS_PATH}
+  
       - id: sql-login
         name: Adquiring SQL Access Token
-        uses: ./.github/actions/login-sql-database
+        uses: ./.github/actions/azure-resource-login
         with:
           creds: ${{secrets.AZURE_CREDENTIALS}}
+          resourceurl: "https://database.windows.net"
       
       - id: deploy-report
         name: Identifying proposed changes

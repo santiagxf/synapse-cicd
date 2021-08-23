@@ -44,7 +44,7 @@ runs:
 
         /opt/sqlpackage/sqlpackage \
           /action:${{ inputs.action }} \
-          /sourcefile:$PWD/${{ inputs.sourcepath }}/${PACKAGE_NAME} \
+          /sourcefile:${{ inputs.sourcepath }}/${PACKAGE_NAME} \
           /Profile:${{ inputs.profile }} \
           /AccessToken:${{ inputs.authtoken }} \
           /outputpath:${{ inputs.outputpath }}/${{ inputs.outputfile }}

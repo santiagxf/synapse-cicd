@@ -1,12 +1,15 @@
-name: 'Get Azure Database Access Token'
-description: 'Get Azure Database Access Token'
+name: 'Getting a token for accessing the resouce'
+description: 'Get Azure Access Token for an specific resource'
 inputs:
   creds:
     description: 'Azure credentials for the service principal to log in'
     required: true
+  resourceurl:
+    description: 'URL of the resource you need to authenticate against'
+    required: true
 outputs:
   token:
-    description: "SQL Authentication Token"
+    description: "Authentication Token"
     value: ${{ steps.adquire-token.outputs.token }}
 runs:
   using: "composite"
@@ -23,7 +26,7 @@ runs:
         Set-PSRepository PSGallery -InstallationPolicy Trusted
         Install-Module -Name Az.Accounts -AllowClobber -Force
         $context = Get-AzContext
-        $sqlToken = (Get-AzAccessToken -ResourceUrl "https://database.windows.net" -DefaultProfile $context).Token
+        $resourceToken = (Get-AzAccessToken -ResourceUrl ${{ inputs.resourceurl}} -DefaultProfile $context).Token
         
-        write-host "::debug::Set the token variable to value $sqlToken"
-        write-host "::set-output name=token::$sqlToken"
+        write-host "::debug::Set the token variable to value $resourceToken"
+        write-host "::set-output name=token::$resourceToken"
