@@ -44,7 +44,7 @@ jobs:
           sourcepath: $PWD/${ARTIFACT_NAME}
           outputpath: $PWD/${ARTIFACT_NAME}
           outputfile: deployreport.${ENVIRONMENT_PREFIX}.xml
-          profile: ${{ github.workspace }}/${PROFILE_PATH}/${ENVIRONMENT_PREFIX}.profile.xml
+          profile: ${{ github.workspace }}/${{ env.PROFILE_PATH }}/${{ env.ENVIRONMENT_PREFIX }}.profile.xml
           authtoken: ${{ steps.sql-login.outputs.token }}
       
       - id: validate-deploy
@@ -52,15 +52,15 @@ jobs:
         uses: ./.github/actions/validate-sqlpackage
         with:
           environment: ${{ env.ENVIRONMENT_PREFIX }}
-          sqlpackage-report: $PWD/${{ env.ARTIFACT_NAME }}/deployreport.${ENVIRONMENT_PREFIX}.xml
+          sqlpackage-report: $PWD/${{ env.ARTIFACT_NAME }}/deployreport.${{ env.ENVIRONMENT_PREFIX }}.xml
           outputfile: deployreport.${{ env.ENVIRONMENT_PREFIX }}.MD
           haltonerrors: true
 
       - id: deploy-target
-        name: Identifying proposed changes
+        name: Deploying changes to target
         uses: ./.github/actions/run-sqlpackage
         with:
           action: 'Publish'
           sourcepath: $PWD/${ARTIFACT_NAME}
-          profile: ${{ github.workspace }}/${PROFILE_PATH}/${ENVIRONMENT_PREFIX}.profile.xml
+          profile: ${{ github.workspace }}/${{ env.PROFILE_PATH }}/${{ env.ENVIRONMENT_PREFIX }}.profile.xml
           authtoken: ${{ steps.sql-login.outputs.token }}
