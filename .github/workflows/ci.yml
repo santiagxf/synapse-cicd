@@ -53,7 +53,7 @@ jobs:
 
       - id: sql-login
         name: Adquiring access token
-        uses: actions/login-sql-database@v1
+        uses: ./.github/actions/login-sql-database
         with:
           creds: ${{secrets.AZURE_CREDENTIALS}}
       
