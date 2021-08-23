@@ -42,7 +42,7 @@ jobs:
         uses: ./.github/actions/azure-resource-login
         with:
           creds: ${{secrets.AZURE_CREDENTIALS}}
-          resourceurl: "https://database.windows.net"
+          resource-url: "https://database.windows.net"
       
       - id: deploy-report
         name: Identifying proposed changes
