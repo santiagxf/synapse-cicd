@@ -44,9 +44,18 @@ runs:
       run: |
         PACKAGE_NAME=$(find ${{ inputs.sourcepath }} -name '*.dacpac' -exec basename {} \;)
 
-        /opt/sqlpackage/sqlpackage \
-          /action:${{ inputs.action }} \
-          /sourcefile:${{ inputs.sourcepath }}/${PACKAGE_NAME} \
-          /Profile:${{ inputs.profile }} \
-          /AccessToken:${{ inputs.authtoken }} \
-          /outputpath:${{ inputs.outputpath }}/${{ inputs.outputfile }}
+        if [[ '${{ inputs.action }}' -eq 'Publish' ]]
+        then
+          /opt/sqlpackage/sqlpackage \
+            /action:${{ inputs.action }} \
+            /sourcefile:${{ inputs.sourcepath }}/${PACKAGE_NAME} \
+            /Profile:${{ inputs.profile }} \
+            /AccessToken:${{ inputs.authtoken }} \
+        else
+          /opt/sqlpackage/sqlpackage \
+            /action:${{ inputs.action }} \
+            /sourcefile:${{ inputs.sourcepath }}/${PACKAGE_NAME} \
+            /Profile:${{ inputs.profile }} \
+            /AccessToken:${{ inputs.authtoken }} \
+            /outputpath:${{ inputs.outputpath }}/${{ inputs.outputfile }}
+        fi
