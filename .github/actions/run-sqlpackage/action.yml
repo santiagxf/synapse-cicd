@@ -59,4 +59,4 @@ runs:
           /sourcefile:$PWD/${{ inputs.sourcepath }}/${PACKAGE_NAME} \
           /Profile:${{ inputs.profile }} \
           /AccessToken:${{ inputs.authtoken }} \
-          /outputfile:$PWD/${{ inputs.outputpath }}/${{ inputs.outputfile }}
+          /outputpath:$PWD/${{ inputs.outputpath }}/${{ inputs.outputfile }}
