@@ -23,6 +23,7 @@ runs:
   using: "composite"
   steps:
     - name: Installing SQL Data Tools
+      shell: bash
       run: |
         if test -f "/opt/sqlpackage/sqlpackage"; then
           echo "::debug::SqlPackage already installed in the context"
@@ -49,6 +50,7 @@ runs:
 
     - id: sqlpackage
       name: Identifying proposed changes
+      shell: bash
       run: |
         PACKAGE_NAME=$(find ${{ inputs.sourcepath }} -name '*.dacpac' -exec basename {} \;)
 
