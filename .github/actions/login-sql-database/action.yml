@@ -25,4 +25,5 @@ runs:
         $context = Get-AzContext
         $sqlToken = (Get-AzAccessToken -ResourceUrl "https://database.windows.net" -DefaultProfile $context).Token
         
+        write-host "::debug::Set the token variable to value $sqlToken"
         write-host "::set-output name=token::$sqlToken"
