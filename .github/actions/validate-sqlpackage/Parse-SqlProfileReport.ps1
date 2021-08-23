@@ -99,7 +99,7 @@ else {
     Write-Host "::debug::No changes will be introduced"
 }
 
-if ($issues -And $haltOnDataIssues)
+if ($issues -And $HaltOnDataIssues)
 {
     throw "Parser found errors that prevents deployment to continue." 
 }

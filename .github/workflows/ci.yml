@@ -51,13 +51,19 @@ jobs:
           action: 'DeployReport'
           sourcepath: $PWD/${ARTIFACTS_PATH}
           outputpath: $PWD/${ARTIFACTS_PATH}
+          outputfile: 'deployreport.xml'
           profile: ${{ github.workspace }}/${PROFILE_PATH}/${ENVIRONMENT_PREFIX}.profile.xml
           authtoken: ${{ steps.sql-login.outputs.token }}
       
-      - name: Validating proposed changes
-        shell: pwsh
-        run: |
-          ${{ github.workspace }}/scripts/Parse-SqlProfileReport.ps1 -Environment "${{ env.ENVIRONMENT_PREFIX }}" -SqlPackageReport "$PWD/${{ env.ARTIFACTS_PATH }}/deployreport.xml" -OutputFilePath "${{ env.ARTIFACTS_PATH }}/deployreport.MD"
+      - id: validate-deploy
+        name: Validating proposed changes
+        uses: ./.github/actions/validate-sqlpackage
+        with:
+          environment: ${{ env.ENVIRONMENT_PREFIX }}
+          sqlpackage-report: $PWD/${{ env.ARTIFACTS_PATH }}/deployreport.xml
+          outputpath: ${{ env.ARTIFACTS_PATH }}
+          outputfile: 'deployreport.MD'
+          haltonerrors: true
 
       - name: Publishing artifacts
         uses: actions/upload-artifact@v2
