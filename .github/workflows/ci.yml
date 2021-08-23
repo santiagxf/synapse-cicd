@@ -52,7 +52,7 @@ jobs:
           echo "::debug::Package built with name: $PACKAGE_NAME"
 
       - id: sql-login
-        name: Adquiring access token
+        name: Adquiring SQL Access Token
         uses: ./.github/actions/login-sql-database
         with:
           creds: ${{secrets.AZURE_CREDENTIALS}}
