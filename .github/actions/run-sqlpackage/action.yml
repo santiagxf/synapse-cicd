@@ -18,6 +18,7 @@ inputs:
     required: false
   outputfile:
     description: 'The output file name'
+    required: false
     default: 'deployreport.xml' 
 runs:
   using: "composite"

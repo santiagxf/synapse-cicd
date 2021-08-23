@@ -23,7 +23,7 @@ runs:
     - name: Validating proposed changes
       shell: pwsh
       run: |
-        ${{ github.workspace }}/actions/validate-sqlpackage/Parse-SqlProfileReport.ps1  `
+        ${{ github.workspace }}/.github/actions/validate-sqlpackage/Parse-SqlProfileReport.ps1  `
           -Environment "${{ inputs.environment }}"  `
           -SqlPackageReport "${{ inputs.sqlpackage-report }}"  `
           -OutputFilePath "${{ inputs.outputpath }}/${{ inputs.outputfile }}"  `
