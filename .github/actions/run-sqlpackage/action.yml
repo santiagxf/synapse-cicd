@@ -36,18 +36,6 @@ runs:
             && rm sqlpackage.zip
         fi
 
-    - id: adquire-token
-      name: Adquiring access token
-      shell: pwsh
-      run: |
-        Set-PSRepository PSGallery -InstallationPolicy Trusted
-        Install-Module -Name Az.Accounts -AllowClobber -Force
-        $context = Get-AzContext
-        $sqlToken = (Get-AzAccessToken -ResourceUrl "https://database.windows.net" -DefaultProfile $context).Token
-        
-        write-host "::debug::Set the token variable to value $sqlToken"
-        write-host "::set-output name=token::$sqlToken"
-
     - id: sqlpackage
       name: Identifying proposed changes
       shell: bash
@@ -59,4 +47,4 @@ runs:
           /sourcefile:$PWD/${{ inputs.sourcepath }}/${PACKAGE_NAME} \
           /Profile:${{ inputs.profile }} \
           /AccessToken:${{ inputs.authtoken }} \
-          /outputpath:$PWD/${{ inputs.outputpath }}/${{ inputs.outputfile }}
+          /outputpath:${{ inputs.outputpath }}/${{ inputs.outputfile }}
