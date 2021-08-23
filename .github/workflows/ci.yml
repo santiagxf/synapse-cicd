@@ -51,21 +51,11 @@ jobs:
           echo "PACKAGE_NAME=$(find ${ARTIFACTS_PATH} -name '*.dacpac' -exec basename {} \;)" >> $GITHUB_ENV
           echo "::debug::Package built with name: $PACKAGE_NAME"
 
-      - name: Logining into Azure
-        uses: Azure/login@v1
+      - id: sql-login
+        name: Adquiring access token
+        uses: actions/login-sql-database@v1
         with:
           creds: ${{secrets.AZURE_CREDENTIALS}}
-          enable-AzPSSession: true
-
-      - name: Adquiring access token
-        shell: pwsh
-        run: |
-          Set-PSRepository PSGallery -InstallationPolicy Trusted
-          Install-Module -Name Az.Accounts -AllowClobber -Force
-          $context = Get-AzContext
-          $sqlToken = (Get-AzAccessToken -ResourceUrl "https://database.windows.net" -DefaultProfile $context).Token
-          
-          echo "SQL_TOKEN=$sqlToken" | Out-File -FilePath $Env:GITHUB_ENV -Encoding utf-8 -Append
       
       - name: Identifying proposed changes
         run: |
@@ -73,7 +63,7 @@ jobs:
             /action:DeployReport \
             /sourcefile:$PWD/${ARTIFACTS_PATH}/${PACKAGE_NAME} \
             /Profile:${{ github.workspace }}/${PROFILE_PATH}/${ENVIRONMENT_PREFIX}.profile.xml \
-            /AccessToken:${SQL_TOKEN} \
+            /AccessToken:${{ steps.sql-login.outputs.token }} \
             /outputpath:$PWD/${ARTIFACTS_PATH}/deployreport.xml
       
       - name: Validating proposed changes

@@ -1,0 +1,28 @@
+name: 'Get Azure Database Access Token'
+description: 'Get Azure Database Access Token'
+inputs:
+  creds:
+    description: 'Azure credentials for the service principal to log in'
+    required: true
+outputs:
+  token:
+    description: "SQL Authentication Token"
+    value: ${{ steps.adquire-token.outputs.token }}
+runs:
+  using: "composite"
+  steps:
+    - name: Logining in into Azure
+      uses: Azure/login@v1
+      with:
+        creds: ${{ inputs.creds }}
+        enable-AzPSSession: true
+    - id: adquire-token
+      name: Adquiring access token
+      shell: pwsh
+      run: |
+        Set-PSRepository PSGallery -InstallationPolicy Trusted
+        Install-Module -Name Az.Accounts -AllowClobber -Force
+        $context = Get-AzContext
+        $sqlToken = (Get-AzAccessToken -ResourceUrl "https://database.windows.net" -DefaultProfile $context).Token
+        
+        echo "::set-output name=token::$(echo $sqlToken)"
