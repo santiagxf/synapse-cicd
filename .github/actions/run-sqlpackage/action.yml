@@ -44,8 +44,7 @@ runs:
       run: |
         PACKAGE_NAME=$(find ${{ inputs.sourcepath }} -name '*.dacpac' -exec basename {} \;)
 
-        if [[ '${{ inputs.action }}' -eq 'Publish' ]]
-        then
+        if [[ '${{ inputs.action }}' == 'Publish' ]]; then
           /opt/sqlpackage/sqlpackage \
             /action:${{ inputs.action }} \
             /sourcefile:${{ inputs.sourcepath }}/${PACKAGE_NAME} \
