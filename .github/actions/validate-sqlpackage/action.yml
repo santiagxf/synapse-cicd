@@ -11,6 +11,7 @@ inputs:
   outputpath:
     description: 'The output folder where assets will be generated if any'
     required: false
+    default: .
   outputfile:
     description: 'The output file name, with extension MD'
     default: 'deployreport.MD'

@@ -53,7 +53,6 @@ jobs:
         with:
           environment: ${{ env.ENVIRONMENT_PREFIX }}
           sqlpackage-report: $PWD/${{ env.ARTIFACT_NAME }}/deployreport.${ENVIRONMENT_PREFIX}.xml
-          outputpath: ${{ env.ARTIFACTS_PATH }}
           outputfile: deployreport.${{ env.ENVIRONMENT_PREFIX }}.MD
           haltonerrors: true
 
