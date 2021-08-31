@@ -45,9 +45,9 @@ runs:
         echo "::debug::Ensuring target folder '${{ inputs.outputpath }}'"
         mkdir -p ${{ inputs.outputpath }}
         
-        PACKAGE_NAMES=$(find ${{ inputs.sourcepath }} -name '*.dacpac' -exec basename {} \;)
+        PACKAGE_PATHS=$(find ${{ inputs.sourcepath }} -name '*.dacpac' -exec basename {} \;)
 
-        for PACKAGE in $PACKAGE_NAMES
+        for PACKAGE in $PACKAGE_PATHS
         do
           echo "::debug::Runing ${{ inputs.action }} on package $PACKAGE"
           
@@ -58,12 +58,14 @@ runs:
               /Profile:${{ inputs.profile }} \
               /AccessToken:${{ inputs.authtoken }}
           else
+            PACKAGE_NAME="${PACKAGE%.*}"
+
             /opt/sqlpackage/sqlpackage \
               /Action:${{ inputs.action }} \
               /SourceFile:${{ inputs.sourcepath }}/$PACKAGE \
               /Profile:${{ inputs.profile }} \
               /AccessToken:${{ inputs.authtoken }} \
-              /OutputPath:${{ inputs.outputpath }}/$PACKAGE.${{ inputs.outputfile }} \
+              /OutputPath:${{ inputs.outputpath }}/$PACKAGE_NAME.${{ inputs.outputfile }} \
               /OverwriteFiles:True
           fi
         done
