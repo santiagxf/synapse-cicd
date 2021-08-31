@@ -42,20 +42,25 @@ runs:
       name: Identifying proposed changes
       shell: bash
       run: |
-        PACKAGE_NAME=$(find ${{ inputs.sourcepath }} -name '*.dacpac' -exec basename {} \;)
+        PACKAGE_NAMES=$(find ${{ inputs.sourcepath }} -name '*.dacpac' -exec basename {} \;)
 
-        if [[ '${{ inputs.action }}' == 'Publish' ]]; then
-          /opt/sqlpackage/sqlpackage \
-            /Action:${{ inputs.action }} \
-            /SourceFile:${{ inputs.sourcepath }}/${PACKAGE_NAME} \
-            /Profile:${{ inputs.profile }} \
-            /AccessToken:${{ inputs.authtoken }}
-        else
-          /opt/sqlpackage/sqlpackage \
-            /Action:${{ inputs.action }} \
-            /SourceFile:${{ inputs.sourcepath }}/${PACKAGE_NAME} \
-            /Profile:${{ inputs.profile }} \
-            /AccessToken:${{ inputs.authtoken }} \
-            /OutputPath:${{ inputs.outputpath }}/${{ inputs.outputfile }} \
-            /OverwriteFiles:True
-        fi
+        for PACKAGE in $PACKAGE_NAMES
+        do
+          echo "::debug::Runing ${{ inputs.action }} on package $PACKAGE"
+          
+          if [[ '${{ inputs.action }}' == 'Publish' ]]; then
+            /opt/sqlpackage/sqlpackage \
+              /Action:${{ inputs.action }} \
+              /SourceFile:${{ inputs.sourcepath }}/$PACKAGE \
+              /Profile:${{ inputs.profile }} \
+              /AccessToken:${{ inputs.authtoken }}
+          else
+            /opt/sqlpackage/sqlpackage \
+              /Action:${{ inputs.action }} \
+              /SourceFile:${{ inputs.sourcepath }}/$PACKAGE \
+              /Profile:${{ inputs.profile }} \
+              /AccessToken:${{ inputs.authtoken }} \
+              /OutputPath:${{ inputs.outputpath }}/${{ inputs.outputfile }} \
+              /OverwriteFiles:True
+          fi
+        done

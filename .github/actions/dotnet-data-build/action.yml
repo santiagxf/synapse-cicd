@@ -18,12 +18,28 @@ outputs:
 runs:
   using: "composite"
   steps:
+    - name: Installing dotnet
+      shell: bash
+      run: |
+        if ! type dotnet > /dev/null; then
+          echo "::debug::dotnet is not available. Installing dotnet 5."
+
+          sudo apt-get update; \
+            sudo apt-get install -y apt-transport-https && \
+            sudo apt-get update && \
+            sudo apt-get install -y dotnet-sdk-5.0
+        else
+          echo "::debug::dotnet is already installed."
+        fi
+        
     - name: Installing SQL Data Tools
       shell: bash
       run: |
         if test -f "azuredatastudio"; then
           echo "::debug::Azure Data Studio already installed in the context"
         else
+          echo "::debug::Azure Data Studio is not available. Downloading and installing."
+
           sudo apt-get install libunwind8
           wget -progress=bar:force -q -O azuredatastudio-linux.deb https://go.microsoft.com/fwlink/?linkid=2168339 \
             && sudo dpkg -i azuredatastudio-linux.deb \
@@ -41,5 +57,5 @@ runs:
           /p:OutputPath=${{ inputs.outputpath }}
         
         PACKAGE_NAME=$(find ${ARTIFACTS_PATH} -name '*.dacpac' -exec basename {} \;)
-        echo "::debug::Package built with name: $PACKAGE_NAME"
+        echo "::debug::The following package(s) have been built: $PACKAGE_NAME"
         echo "::set-output name=packagename::$PACKAGE_NAME"
