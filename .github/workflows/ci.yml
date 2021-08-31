@@ -53,7 +53,7 @@ jobs:
         uses: ./.github/actions/validate-sqlpackage
         with:
           environment: ${{ env.ENVIRONMENT_PREFIX }}
-          sqlpackage-report: $PWD/${{ env.ARTIFACTS_PATH }}/deployreport.xml
+          sqlpackage-report: $PWD/${{ env.ARTIFACTS_PATH }}/*.xml
           outputpath: ${{ env.ARTIFACTS_PATH }}
           outputfile: 'deployreport.MD'
           haltonerrors: true

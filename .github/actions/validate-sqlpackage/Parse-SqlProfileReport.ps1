@@ -31,7 +31,10 @@ function Write-TableIssue {
 
 Write-Debug 'Creating report header'
 $Environment = $Environment.ToUpper()
-Add-Content -Path $OutputFilePath -Value "# SQL Pool changes' report for $Environment"
+$ReportName = [System.IO.Path]::GetFileNameWithoutExtension($SqlPackageReport)
+
+Add-Content -Path $OutputFilePath -Value "# SQL Pool changes' report on $Environment"
+Add-Content -Path $OutputFilePath -Value "## Reported for file $ReportName"
 Add-Content -Path $OutputFilePath -Value "The following report contains a summary of the changes that will be applied  `
                                           to the targeted database according to the data solution packages. Please review  `
                                           the content of the report to identify if all the operations that will be performed  `

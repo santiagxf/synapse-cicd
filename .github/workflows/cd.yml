@@ -42,8 +42,8 @@ jobs:
         with:
           action: 'DeployReport'
           sourcepath: $PWD/${ARTIFACT_NAME}
-          outputpath: $PWD/${ARTIFACT_NAME}
-          outputfile: deployreport.${ENVIRONMENT_PREFIX}.xml
+          outputpath: $PWD/${ARTIFACT_NAME}/${ENVIRONMENT_PREFIX}
+          outputfile: deployreport.xml
           profile: ${{ github.workspace }}/${{ env.PROFILE_PATH }}/${{ env.ENVIRONMENT_PREFIX }}.profile.xml
           authtoken: ${{ steps.sql-login.outputs.token }}
       
@@ -52,7 +52,7 @@ jobs:
         uses: ./.github/actions/validate-sqlpackage
         with:
           environment: ${{ env.ENVIRONMENT_PREFIX }}
-          sqlpackage-report: $PWD/${{ env.ARTIFACT_NAME }}/deployreport.${{ env.ENVIRONMENT_PREFIX }}.xml
+          sqlpackage-report: $PWD/${{ env.ARTIFACT_NAME }}/${ENVIRONMENT_PREFIX}/*.xml
           outputfile: deployreport.${{ env.ENVIRONMENT_PREFIX }}.MD
           haltonerrors: true
 

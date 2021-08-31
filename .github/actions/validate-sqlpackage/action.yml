@@ -24,8 +24,13 @@ runs:
     - name: Validating proposed changes
       shell: pwsh
       run: |
-        ${{ github.workspace }}/.github/actions/validate-sqlpackage/Parse-SqlProfileReport.ps1  `
-          -Environment "${{ inputs.environment }}"  `
-          -SqlPackageReport "${{ inputs.sqlpackage-report }}"  `
-          -OutputFilePath "${{ inputs.outputpath }}/${{ inputs.outputfile }}"  `
-          -HaltOnDataIssues ${{ '$' }}${{ inputs.haltonerrors }}
+        $files = Get-ChildItem "${{ inputs.sqlpackage-report }}"
+
+        ForEach($report in $files)
+        {
+          ${{ github.workspace }}/.github/actions/validate-sqlpackage/Parse-SqlProfileReport.ps1  `
+            -Environment "${{ inputs.environment }}"  `
+            -SqlPackageReport $report.FullName  `
+            -OutputFilePath "${{ inputs.outputpath }}/${{ inputs.outputfile }}"  `
+            -HaltOnDataIssues ${{ '$' }}${{ inputs.haltonerrors }}
+        }

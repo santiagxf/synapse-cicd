@@ -18,7 +18,7 @@ inputs:
     required: false
     default: .
   outputfile:
-    description: 'The output file name'
+    description: 'The output file name. The final name of the file will be [dacpac_name].[outputfile]'
     required: false
     default: 'deployreport.xml' 
 runs:
@@ -42,6 +42,9 @@ runs:
       name: Identifying proposed changes
       shell: bash
       run: |
+        echo "::debug::Ensuring target folder '${{ inputs.outputpath }}'"
+        mkdir -p ${{ inputs.outputpath }}
+        
         PACKAGE_NAMES=$(find ${{ inputs.sourcepath }} -name '*.dacpac' -exec basename {} \;)
 
         for PACKAGE in $PACKAGE_NAMES
@@ -60,7 +63,7 @@ runs:
               /SourceFile:${{ inputs.sourcepath }}/$PACKAGE \
               /Profile:${{ inputs.profile }} \
               /AccessToken:${{ inputs.authtoken }} \
-              /OutputPath:${{ inputs.outputpath }}/${{ inputs.outputfile }} \
+              /OutputPath:${{ inputs.outputpath }}/$PACKAGE.${{ inputs.outputfile }} \
               /OverwriteFiles:True
           fi
         done
