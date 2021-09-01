@@ -13,6 +13,7 @@ inputs:
   profile:
     description: 'Publishing profile to use. If both database server and database name have been specified, this can be ignored'
     required: false
+    default: ''
   label:
     description: 'Restore point label. Defaults to the GitHub action run ID'
     required: false
@@ -36,7 +37,7 @@ runs:
         Install-Module -Name Az.Accounts -AllowClobber -Force
         Install-Module -Name Az.Sql -AllowClobber -Force
         
-        if (${{ inputs.profile }})
+        if ('${{ inputs.profile }}' -ne '')
         {
           [xml] $profile = Get-Content ${{ inputs.profile }}
           $connectionString = $profile.Project.PropertyGroup.TargetConnectionString
