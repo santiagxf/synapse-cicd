@@ -32,6 +32,10 @@ runs:
       name: Creating a restore point
       shell: pwsh
       run: |
+        Set-PSRepository PSGallery -InstallationPolicy Trusted
+        Install-Module -Name Az -AllowClobber -Force
+        Install-Module -Name Az.Sql -AllowClobber -Force
+        
         if (${{ inputs.profile }})
         {
           [xml] $profile = Get-Content ${{ inputs.profile }}
@@ -63,9 +67,6 @@ runs:
         }
         else
         {
-          Set-PSRepository PSGallery -InstallationPolicy Trusted
-          Install-Module -Name Az.Sql -AllowClobber -Force
-
           $creationRequest = New-AzSqlDatabaseRestorePoint `
             -DatabaseName $databaseName `
             -ServerName $resourceName `
