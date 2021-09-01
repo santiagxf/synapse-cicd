@@ -10,6 +10,14 @@ inputs:
   profile:
     description: 'The profile path to use during the execution. It has to be an xml file'
     required: true
+  database-server:
+    description: 'Database server URL. If missing it has to be indicated in the profile file'
+    required: false
+    default: ''
+  database-name:
+    description: 'Database name. If missing it has to be indicated in the profile file'
+    required: false
+    default: ''
   authtoken:
     description: 'The authentication token used to connect to the database, if credentials not indicated in the connection string'
     required: true
@@ -50,22 +58,31 @@ runs:
         for PACKAGE in $PACKAGE_PATHS
         do
           echo "::debug::Runing ${{ inputs.action }} on package $PACKAGE"
-          
-          if [[ '${{ inputs.action }}' == 'Publish' ]]; then
-            /opt/sqlpackage/sqlpackage \
+
+          SQLPACKAGE_CMD="/opt/sqlpackage/sqlpackage \
               /Action:${{ inputs.action }} \
               /SourceFile:${{ inputs.sourcepath }}/$PACKAGE \
               /Profile:${{ inputs.profile }} \
-              /AccessToken:${{ inputs.authtoken }}
-          else
+              /AccessToken:${{ inputs.authtoken }}"
+          
+          if [[ '${{ inputs.database-server }}' != '' ]]; then
+            SQLPACKAGE_CMD="$SQLPACKAGE_CMD \
+              /TargetServerName:${{ inputs.database-server }}"
+          fi
+
+          if [[ '${{ inputs.database-name }}' != '' ]]; then
+            SQLPACKAGE_CMD="$SQLPACKAGE_CMD \
+              /TargetDatabaseName:${{ inputs.database-name }}"
+          fi
+
+          if [[ '${{ inputs.action }}' != 'Publish' ]]; then
             PACKAGE_NAME="${PACKAGE%.*}"
 
-            /opt/sqlpackage/sqlpackage \
-              /Action:${{ inputs.action }} \
-              /SourceFile:${{ inputs.sourcepath }}/$PACKAGE \
-              /Profile:${{ inputs.profile }} \
-              /AccessToken:${{ inputs.authtoken }} \
+            SQLPACKAGE_CMD="$SQLPACKAGE_CMD \
               /OutputPath:${{ inputs.outputpath }}/$PACKAGE_NAME.${{ inputs.outputfile }} \
-              /OverwriteFiles:True
+              /OverwriteFiles:True"
           fi
+
+          echo "::debug::SqlPackage intruction is '$SQLPACKAGE_CMD'"
+          eval $SQLPACKAGE_CMD
         done
