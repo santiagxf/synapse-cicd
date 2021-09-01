@@ -50,6 +50,7 @@ runs:
         }
 
         $resourceName = $source.Split('.')[0]
+        write-host "::debug::Database resource is $source ($databaseName)"
 
         if ('${{ inputs.synapse-workspace }}' -eq 'true')
         {
