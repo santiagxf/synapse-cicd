@@ -32,7 +32,7 @@ jobs:
 
       - id: mgmt-login
         name: Adquiring Azure Resource Management Access Token
-        uses: azure-resource-login
+        uses: ./.github/actions/azure-resource-login
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
           resource-url: "https://management.core.windows.net/"
