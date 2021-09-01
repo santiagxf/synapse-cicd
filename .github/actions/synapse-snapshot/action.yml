@@ -62,9 +62,9 @@ runs:
             'Authorization'='Bearer ${{ inputs.authtoken }}' 
           }
           $payload = @{
-            'RestorePointLabel'='${{ inputs.label }}'
+            'restorePointLabel'='${{ inputs.label }}'
           }
-
+          write-host "::debug::Calling $requestUrl over POST"
           $request = Invoke-RestMethod -Method Post -Uri $requestUrl -Headers $headers -Body $payload
         }
         else
