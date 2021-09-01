@@ -60,7 +60,7 @@ runs:
             {Authorization}='Bearer ${{ inputs.authtoken }}' 
           }
           $payload = @{
-            RestorePointLabel=${{ inputs.label }}
+            RestorePointLabel='${{ inputs.label }}'
           }
 
           $request = Invoke-RestMethod -Method Post -Uri $requestUrl -Headers $headers -Body $payload
