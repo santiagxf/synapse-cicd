@@ -4,11 +4,11 @@ The following custom actions are available in this repository:
 
 | Action | Description | Outputs |
 | --- | ----------- | ------------- |
-| <nobr>[azure-resource-login](#azure-resource-login)</nobr> | Provides a convenient way to login into an Azure Resource using a Service Principal | Authentication token |
-| <nobr>[dotnet-data-build](#dotnet-data-build)</nobr> | Builds a `Visual Studio Database Projects` and generates the asociated `dacpac` | Built artifact(s) |
-| <nobr>[run-sqlpackage](#run-sqlpackage)</nobr> | Runs `SqlPackage` command line utility | Depends on the Action executed |
-| <nobr>[synapse-snapshot](#synapse-snapshot)</nobr> | Creates a restore point in either a Synapse Analytics Workspace or an Azure SQL Database | None |
-| <nobr>[validate-sqlpackage](#validate-sqlpackage)</nobr> | Performs a validation on a `Deployment Report` generated using `SqlPackage`. | A MarkDown file with the summary of the validations |
+| [<nobr>azure-resource-login</nobr>](#azure-resource-login) | Provides a convenient way to login into an Azure Resource using a Service Principal | Authentication token |
+| [<nobr>dotnet-data-build</nobr>](#dotnet-data-build) | Builds a `Visual Studio Database Projects` and generates the asociated `dacpac` | Built artifact(s) |
+| [<nobr>run-sqlpackage</nobr>](#run-sqlpackage) | Runs `SqlPackage` command line utility | Depends on the Action executed |
+| [<nobr>synapse-snapshot</nobr>](#synapse-snapshot) | Creates a restore point in either a Synapse Analytics Workspace or an Azure SQL Database | None |
+| [<nobr>validate-sqlpackage</nobr>](#validate-sqlpackage) | Performs a validation on a `Deployment Report` generated using `SqlPackage`. | A MarkDown file with the summary of the validations |
 
 
 ## azure-resource-login
