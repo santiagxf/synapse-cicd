@@ -38,7 +38,7 @@ Parameters:
 > Runs `SqlPackage` command line utility.
 
 Parameters:
- - **action:** Action parameter to run with `SqlPackage`. Supported values: ``Publish`, `DeployReport`, `DriftReport`, `Script`.
+ - **action:** Action parameter to run with `SqlPackage`. Supported values: `Publish`, `DeployReport`, `DriftReport`, `Script`.
  - **sourcepath:** The path where to look for the `dacpac` file. Wildcard paths are supported. When multiple files are matched by the expression, `SqlPackage` is executed on each of them.
  - **profile:** The profile file path to use during the execution of `SqlPackage`. This file has to be in `XML`. You can generate a sample of this file using Visual Studio'.
  - **database-server:** Database server URL (without protocol) that `SqlPackage` should target. This parameter is optional if the database server is indicated in the publishing profile.
