@@ -34,7 +34,7 @@ jobs:
         name: Adquiring SQL Access Token
         uses: ./.github/actions/azure-resource-login
         with:
-          creds: ${{secrets.AZURE_CREDENTIALS}}
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
           resource-url: "https://database.windows.net"
       
       - id: deploy-report
@@ -57,13 +57,19 @@ jobs:
           outputfile: ${{ env.ENVIRONMENT_PREFIX }}.deployreport.MD
           haltonerrors: true
       
+      - name: Publishing deployment report
+        uses: actions/upload-artifact@v2
+        with:
+          name: deploy
+          path: ${{ env.ENVIRONMENT_PREFIX }}.deployreport.MD
+      
       - id: database-snapshot
         name: Taking a restore point on target database
         uses: ./.github/actions/synapse-snapshot
         with:
           resource-group: ${{ env.RESOURCE_GROUP }}
           profile: ${{ github.workspace }}/${{ env.PROFILE_PATH }}/${{ env.ENVIRONMENT_PREFIX }}.profile.xml
-          authtoken: ${{ steps.sql-login.outputs.token }}
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
           synapse-workspace: true
 
       - id: deploy-target
@@ -74,9 +80,3 @@ jobs:
           sourcepath: $PWD/${ARTIFACT_NAME}
           profile: ${{ github.workspace }}/${{ env.PROFILE_PATH }}/${{ env.ENVIRONMENT_PREFIX }}.profile.xml
           authtoken: ${{ steps.sql-login.outputs.token }}
-      
-      - name: Publishing artifacts
-        uses: actions/upload-artifact@v2
-        with:
-          name: deploy
-          path: ${{ env.ENVIRONMENT_PREFIX }}.deployreport.MD
