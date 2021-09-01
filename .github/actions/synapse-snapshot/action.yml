@@ -17,8 +17,8 @@ inputs:
     description: 'Restore point label. Defaults to the GitHub action run ID'
     required: false
     default: 'job-${{ github.run_id }}'
-  creds:
-    description: 'Azure credentials for the service principal to log in'
+  authtoken:
+    description: 'Authentication token to execute the operation'
     required: true
   synapse-workspace:
     description: 'True if the target database is a Synapse Analytics workspace'
@@ -28,13 +28,6 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - id: mgmt-login
-        name: Adquiring Azure Resource Management Access Token
-        uses: azure-resource-login
-        with:
-          creds: ${{ inputs.creds }}
-          resource-url: "https://management.core.windows.net/"
-    
     - id: database-snapshot
       name: Creating a restore point
       shell: pwsh
@@ -64,7 +57,7 @@ runs:
           $requestUrl = "https://management.azure.com/subscriptions/$subscriptionId/resourceGroups/${{ inputs.resource-group }}/providers/Microsoft.Synapse/workspaces/$resourceName/sqlPools/$databaseName/restorePoints?api-version=2021-05-01"
           $headers = @{
             'Content-Type'='application/json';
-            'Authorization'='Bearer ${{ steps.mgmt-login.outputs.token }}' 
+            'Authorization'='Bearer ${{ inputs.authtoken }}' 
           }
           $payload = @{
             'RestorePointLabel'='${{ inputs.label }}'

@@ -30,6 +30,13 @@ jobs:
           name: ${{ env.ARTIFACT_NAME }}
           path: ${{ env.ARTIFACT_NAME }}
 
+      - id: mgmt-login
+        name: Adquiring Azure Resource Management Access Token
+        uses: azure-resource-login
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+          resource-url: "https://management.core.windows.net/"
+
       - id: sql-login
         name: Adquiring SQL Access Token
         uses: ./.github/actions/azure-resource-login
@@ -69,7 +76,7 @@ jobs:
         with:
           resource-group: ${{ env.RESOURCE_GROUP }}
           profile: ${{ github.workspace }}/${{ env.PROFILE_PATH }}/${{ env.ENVIRONMENT_PREFIX }}.profile.xml
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
+          authtoken: ${{ steps.mgmt-login.outputs.token }}
           synapse-workspace: true
 
       - id: deploy-target
