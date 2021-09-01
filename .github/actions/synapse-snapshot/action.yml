@@ -56,7 +56,7 @@ runs:
         if ('${{ inputs.synapse-workspace }}' -eq 'true')
         {
           $subscriptionId = (Get-AzContext).Subscription.Id
-          $requestUrl = "https://management.azure.com/subscriptions/$subscriptionId/resourceGroups/${{ inputs.resource-group }}/providers/Microsoft.Synapse/workspaces/$resourceName/sqlPools/$databaseName/restorePoints"
+          $requestUrl = "https://management.azure.com/subscriptions/$subscriptionId/resourceGroups/${{ inputs.resource-group }}/providers/Microsoft.Synapse/workspaces/$resourceName/sqlPools/$databaseName/restorePoints?api-version=2021-03-01"
           $headers = @{
             'Content-Type'='application/json';
             'Authorization'='Bearer ${{ inputs.authtoken }}' 
