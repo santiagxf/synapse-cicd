@@ -18,6 +18,7 @@ jobs:
       ARTIFACT_NAME: build
       PROFILE_PATH: profiles
       ENVIRONMENT_PREFIX: dev
+      RESOURCE_GROUP: Analytics.DataPlatform.Group
 
     steps:
       - uses: actions/checkout@v2
@@ -55,6 +56,15 @@ jobs:
           sqlpackage-report: $PWD/${{ env.ARTIFACT_NAME }}/${ENVIRONMENT_PREFIX}/*.xml
           outputfile: ${{ env.ENVIRONMENT_PREFIX }}.deployreport.MD
           haltonerrors: true
+      
+      - id: database-snapshot
+        name: Taking a restore point on target database
+        uses: ./.github/actions/synapse-snapshot
+        with:
+          resource-group: ${{ env.RESOURCE_GROUP }}
+          profile: ${{ github.workspace }}/${{ env.PROFILE_PATH }}/${{ env.ENVIRONMENT_PREFIX }}.profile.xml
+          authtoken: ${{ steps.sql-login.outputs.token }}
+          synapse-workspace: true
 
       - id: deploy-target
         name: Deploying changes to target

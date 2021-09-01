@@ -11,7 +11,7 @@ inputs:
     description: 'The profile path to use during the execution. It has to be an xml file'
     required: true
   database-server:
-    description: 'Database server URL. If missing it has to be indicated in the profile file'
+    description: 'Database server URL (without protocol). If missing it has to be indicated in the profile file'
     required: false
     default: ''
   database-name:

@@ -1,0 +1,84 @@
+name: 'Taking a restore point on target database'
+description: 'Takes a restore point on the target database'
+inputs:
+  resource-group:
+    description: 'Resource group where the database is located'
+    required: true
+  database-server:
+    description: 'Target database server name. If a publishing profile is indicated with the value, this can be ignored'
+    required: false
+  database-name:
+    description: 'Database name. If a publishing profile is indicated with the value, this can be ignored'
+    required: false
+  profile:
+    description: 'Publishing profile to use. If both database server and database name have been specified, this can be ignored'
+    required: false
+  label:
+    description: 'Restore point label. Defaults to the GitHub action run ID'
+    required: false
+    default: 'job-${{ github.run_id }}'
+  authtoken:
+    description: 'Authentication token to execute the operation'
+    required: true
+  synapse-workspace:
+    description: 'True if the target database is a Synapse Analytics workspace'
+    required: false
+    default: true
+
+runs:
+  using: "composite"
+  steps:
+    - id: database-snapshot
+      name: Creating a restore point
+      shell: pwsh
+      run: |
+        if (${{ inputs.profile }} -eq '')
+        {
+          $source = "${{ inputs.database-server }}"
+          $databaseName = ${{ inputs.database-name }}
+        }
+        else
+        {
+          [xml] $profile = Get-Content ${{ inputs.profile }}
+          $connectionString = $profile.Project.PropertyGroup.TargetConnectionString
+          $source = [regex]::Match($connectionString, 'Data Source=([^;]+)').Groups[1].Value
+          $databaseName = $profile.Project.PropertyGroup.TargetDatabaseName
+        }
+
+        $resourceName = $source.Split('.')[0]
+
+        if (${{ inputs.synapse-workspace }} -eq 'true')
+        {
+          $subscriptionId = (Get-AzureSubscription -Current).SubscriptionId
+          $requestUrl = "https://management.azure.com/subscriptions/$subscriptionId/resourceGroups/${{ ${{ inputs.resource-group }} }}/providers/Microsoft.Synapse/workspaces/$resourceName/sqlPools/$databaseName/restorePoints?api-version=2021-05-01"
+          $headers = @{
+            {Content-Type}='application/json';
+            {Authorization}='Bearer ${{ inputs.authtoken }}' 
+          }
+          $payload = @{
+            RestorePointLabel=${{ inputs.label }}
+          }
+
+          $request = Invoke-RestMethod -Method Post -Uri $requestUrl -Headers $headers -Body $payload
+        }
+        else
+        {
+          $creationRequest = New-AzSqlDatabaseRestorePoint `
+            -DatabaseName $databaseName `
+            -ServerName $resourceName `
+            -ResourceGroupName ${{ inputs.resource-group }} `
+            -RestorePointLabel ${{ inputs.label }}
+      
+          $waitDelay = 5
+          write-host "Waiting for the creation job" -NoNewLine
+          while (($creationRequest | Get-AzSqlDatabaseRestorePoint).Status -eq 'InProgress') 
+          {
+              write-host '.' -NoNewLine
+              Start-Sleep $waitDelay
+          }
+
+          write-host " [OK]" -ForegroundColor Green
+        }
+
+        
+
