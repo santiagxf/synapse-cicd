@@ -32,17 +32,17 @@ runs:
       name: Creating a restore point
       shell: pwsh
       run: |
-        if (${{ inputs.profile }} -eq '')
-        {
-          $source = "${{ inputs.database-server }}"
-          $databaseName = ${{ inputs.database-name }}
-        }
-        else
+        if (${{ inputs.profile }})
         {
           [xml] $profile = Get-Content ${{ inputs.profile }}
           $connectionString = $profile.Project.PropertyGroup.TargetConnectionString
           $source = [regex]::Match($connectionString, 'Data Source=([^;]+)').Groups[1].Value
           $databaseName = $profile.Project.PropertyGroup.TargetDatabaseName
+        }
+        else
+        {
+          $source = "${{ inputs.database-server }}"
+          $databaseName = ${{ inputs.database-name }}
         }
 
         $resourceName = $source.Split('.')[0]
