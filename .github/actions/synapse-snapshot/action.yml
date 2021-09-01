@@ -42,7 +42,7 @@ runs:
         else
         {
           $source = "${{ inputs.database-server }}"
-          $databaseName = ${{ inputs.database-name }}
+          $databaseName = "${{ inputs.database-name }}"
         }
 
         $resourceName = $source.Split('.')[0]
