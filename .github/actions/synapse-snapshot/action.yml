@@ -47,7 +47,7 @@ runs:
 
         $resourceName = $source.Split('.')[0]
 
-        if (${{ inputs.synapse-workspace }} -eq 'true')
+        if (${{ inputs.synapse-workspace }})
         {
           $subscriptionId = (Get-AzureSubscription -Current).SubscriptionId
           $requestUrl = "https://management.azure.com/subscriptions/$subscriptionId/resourceGroups/${{ inputs.resource-group }}/providers/Microsoft.Synapse/workspaces/$resourceName/sqlPools/$databaseName/restorePoints?api-version=2021-05-01"
@@ -63,6 +63,9 @@ runs:
         }
         else
         {
+          Set-PSRepository PSGallery -InstallationPolicy Trusted
+          Install-Module -Name Az.Sql -AllowClobber -Force
+
           $creationRequest = New-AzSqlDatabaseRestorePoint `
             -DatabaseName $databaseName `
             -ServerName $resourceName `
