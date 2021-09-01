@@ -56,11 +56,11 @@ runs:
           $subscriptionId = (Get-AzContext).Subscription.Id
           $requestUrl = "https://management.azure.com/subscriptions/$subscriptionId/resourceGroups/${{ inputs.resource-group }}/providers/Microsoft.Synapse/workspaces/$resourceName/sqlPools/$databaseName/restorePoints?api-version=2021-05-01"
           $headers = @{
-            {Content-Type}='application/json';
-            {Authorization}='Bearer ${{ inputs.authtoken }}' 
+            'Content-Type'='application/json';
+            'Authorization'='Bearer ${{ inputs.authtoken }}' 
           }
           $payload = @{
-            RestorePointLabel='${{ inputs.label }}'
+            'RestorePointLabel'='${{ inputs.label }}'
           }
 
           $request = Invoke-RestMethod -Method Post -Uri $requestUrl -Headers $headers -Body $payload
