@@ -86,7 +86,10 @@ Add-Content -Path $OutputFilePath -Value "## Changeset"
 Add-Content -Path $OutputFilePath -Value "This is the list of operations that will be performed in the target database according to its current state.`r`n<br />`r`n"
 
 $operations = $report.DeploymentReport.Operations.Operation
-if ($operations){
+if ($operations)
+{
+    $ignorable = $false
+
     $operations | group -Property Name | Select -ExpandProperty Group | foreach {
         $operation = $_.Name
 
@@ -98,6 +101,7 @@ if ($operations){
     }
 }
 else {
+    $ignorable = $true
     Add-Content -Path $OutputFilePath -Value " - No changes will be introduced"
     Write-Host "::debug::No changes will be introduced"
 }
@@ -105,4 +109,9 @@ else {
 if ($issues -And $HaltOnDataIssues)
 {
     throw "Parser found errors that prevents deployment to continue." 
+}
+
+return @{
+    ignorable=$ignorable;
+    errors=$issues
 }

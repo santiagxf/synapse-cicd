@@ -17,7 +17,7 @@ inputs:
   label:
     description: 'Restore point label. Defaults to the GitHub action run ID'
     required: false
-    default: 'job-${{ github.run_id }}'
+    default: 'cicd-job-${{ github.run_id }}'
   authtoken:
     description: 'Authentication token to execute the operation'
     required: true
@@ -25,7 +25,6 @@ inputs:
     description: 'True if the target database is a Synapse Analytics workspace'
     required: false
     default: true
-
 runs:
   using: "composite"
   steps:

@@ -2,7 +2,12 @@
 [![CD](https://github.com/santiagxf/synapse-cicd/actions/workflows/cd.yml/badge.svg)](https://github.com/santiagxf/synapse-cicd/actions/workflows/cd.yml)
 # Azure Synapse CI/CD pipeline with GitHub Workflows
 
-This repository contains an implementation of a CI/CD pipeline using GitHub Workflows to package, validate and integrate changes into an Azure Synapse Database. This implementatio[n can also be used with Azure SQL Databases, Azure SQL Managed Instances and Microsoft SQL Server running on a VM. Check the quickstart section](#Quickstart) to get yourself started with this template.
+This repository contains an implementation of a CI/CD pipeline using GitHub Workflows to package, validate and integrate changes into an Azure Synapse Database. This implementation can also be used with Azure SQL Databases, Azure SQL Managed Instances and Microsoft SQL Server running on a VM. Check the [quickstart section](docs/quickstart.md) to get yourself started with this template.
+
+## Quickstart
+
+If you are planing to use this CI/CD implementation in your deployment, follow the [Quickstart guide](docs/quickstart.md) to configure all the elements that you need in your repository.
+
 
 ## Implementation
 
@@ -43,7 +48,3 @@ Both issues and warnings are logged into the annotation board in GitHub where a 
 ## CI/CD custom actions
 
 This repository contains custom GitHub Actions to facilitate the work done by the jobs. Check the [Custom Actions documentation for more information](docs/actions.md)
-
-## Quickstart
-
-If you are planing to use this CI/CD implementation in your deployment, follow the [Quickstart guide](docs/quickstart.md) to configure all the elements that you need in your repository.

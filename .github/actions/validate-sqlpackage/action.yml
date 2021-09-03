@@ -18,19 +18,33 @@ inputs:
   haltonerrors:
     description: 'If the action should fail when validation errors are found'
     default: true
+outputs:
+  can-ignore:
+    description: "Indicates if the deployment can be ignored as no changes are performed"
+    value: ${{ steps.validate.outputs.ignorable }}
+  errors:
+    description: "Indicates if the de"
+    value: ${{ steps.validate.outputs.errors }}
 runs:
   using: "composite"
   steps:
-    - name: Validating proposed changes
+    - id: validate
+      name: Validating proposed changes
       shell: pwsh
       run: |
         $files = Get-ChildItem "${{ inputs.sqlpackage-report }}"
 
         ForEach($report in $files)
         {
-          ${{ github.workspace }}/.github/actions/validate-sqlpackage/Parse-SqlProfileReport.ps1  `
-            -Environment "${{ inputs.environment }}"  `
-            -SqlPackageReport $report.FullName  `
-            -OutputFilePath "${{ inputs.outputpath }}/${{ inputs.outputfile }}"  `
-            -HaltOnDataIssues ${{ '$' }}${{ inputs.haltonerrors }}
+          $packageAnalysis = ${{ github.workspace }}/.github/actions/validate-sqlpackage/Parse-SqlProfileReport.ps1  `
+                                -Environment "${{ inputs.environment }}"  `
+                                -SqlPackageReport $report.FullName  `
+                                -OutputFilePath "${{ inputs.outputpath }}/${{ inputs.outputfile }}"  `
+                                -HaltOnDataIssues ${{ '$' }}${{ inputs.haltonerrors }}
+          
+          $ignorable = $ignorable -and $packageAnalysis.ignorable
+          $errors = $errors -or $packageAnalysis.errors
         }
+
+        write-host "::set-output name=ignorable::$ignorable"
+        write-host "::set-output name=errors::$errors"
