@@ -33,8 +33,8 @@ runs:
       shell: pwsh
       run: |
         Set-PSRepository PSGallery -InstallationPolicy Trusted
-        Install-Module -Name Az.Accounts -AllowClobber -Force
-        Install-Module -Name Az.Sql -AllowClobber -Force
+        Install-Module -Name Az.Accounts -AllowClobber
+        Install-Module -Name Az.Sql -AllowClobber
         
         if ('${{ inputs.profile }}' -ne '')
         {

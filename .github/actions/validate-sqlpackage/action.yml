@@ -33,6 +33,8 @@ runs:
       shell: pwsh
       run: |
         $files = Get-ChildItem "${{ inputs.sqlpackage-report }}"
+        $ignorable = $true
+        $errors = $false
 
         ForEach($report in $files)
         {
@@ -46,5 +48,7 @@ runs:
           $errors = $errors -or $packageAnalysis.errors
         }
 
+        write-host "::debug::Setting 'ignorable' variable to $ignorable"
+        write-host "::debug::Set the 'errors' variable to $errors"
         write-host "::set-output name=ignorable::$ignorable"
         write-host "::set-output name=errors::$errors"
