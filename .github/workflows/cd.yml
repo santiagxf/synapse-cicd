@@ -73,7 +73,7 @@ jobs:
       - id: database-snapshot
         name: Taking a restore point on target database
         uses: ./.github/actions/synapse-snapshot
-        if: steps.validate-deploy.outputs.ignorable == False
+        if: steps.validate-deploy.outputs.ignorable == 'False'
         with:
           resource-group: ${{ env.RESOURCE_GROUP }}
           profile: ${{ github.workspace }}/${{ env.PROFILE_PATH }}/${{ env.ENVIRONMENT_PREFIX }}.profile.xml
@@ -83,7 +83,7 @@ jobs:
       - id: deploy-target
         name: Deploying changes to target
         uses: ./.github/actions/run-sqlpackage
-        if: steps.validate-deploy.outputs.ignorable == False
+        if: steps.validate-deploy.outputs.ignorable == 'False'
         with:
           action: 'Publish'
           sourcepath: $PWD/${ARTIFACT_NAME}
