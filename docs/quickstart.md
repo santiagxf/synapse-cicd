@@ -31,7 +31,7 @@ This guide is intended to get you up and running in using this repository for yo
     BEGIN
         CREATE USER [`$(IDENTITY)] FROM EXTERNAL PROVIDER
     END
-    EXEC sp_addrolemember '`$<ROLE>', [`$(IDENTITY)];
+    EXEC sp_addrolemember '<ROLE>', [`$(IDENTITY)];
     ```
 
 You should be all set to use this CI/CD implementation.
