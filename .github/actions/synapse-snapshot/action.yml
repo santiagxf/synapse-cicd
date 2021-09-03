@@ -65,7 +65,7 @@ runs:
             'restorePointLabel'='${{ inputs.label }}'
           }
           write-host "::debug::Calling $requestUrl over POST"
-          $request = Invoke-RestMethod -Method Post -Uri $requestUrl -Headers $headers -Body $payload
+          $request = Invoke-RestMethod -Method Post -Uri $requestUrl -Headers $headers -Body (ConvertTo-Json $payload)
         }
         else
         {
