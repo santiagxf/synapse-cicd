@@ -29,7 +29,7 @@ This guide is intended to get you up and running in using this repository for yo
                 FROM [sys].[database_principals]
                 WHERE [type] = N'E' AND [name] = N'<IDENTITY>')
     BEGIN
-        CREATE USER [`$(IDENTITY)] FROM EXTERNAL PROVIDER
+        CREATE USER [<IDENTITY>] FROM EXTERNAL PROVIDER
     END
     EXEC sp_addrolemember '<ROLE>', [<IDENTITY>];
     ```
