@@ -21,7 +21,7 @@ Parameters:
 - **resource-type-name:** The type of the resource you want to authenticate for. If you indicate `resource-url` this parameter can be ignored. Supported values: `AadGraph`, `AnalysisServices`, `Arm` (default), `Attestation`, `Batch`, `DataLake`, `KeyVault`, `OperationalInsights`, `ResourceManager`, `Storage`, `Synapse`.
 
 Outputs:
- - **token:** Authentication Token
+ - **token [string]:** Authentication Token
 
 
 ## dotnet-data-build
@@ -70,3 +70,7 @@ Parameters:
  - **outputpath:** The output folder where assets will be generated if any.
  - **outputfile:** The output file name, with extension MD'. Default is `deployreport.MD`
  - **haltonerrors:** Indicates if the action should fail when validation errors are found. Defaults to `true`.
+
+Outputs:
+ - **ignorable [bool]:** Indicates if the deployment can be ignored since no changes are introduced in the database. It indicates that none of the packages will introduce changes into the target database.
+ - **errors [bool]:** Indicates if errors or data issues were found during the analysis. This is useful when `haltOnErrors` is set to `false`, and then, even when the step succeeds, `errors` will be set to `true`.
