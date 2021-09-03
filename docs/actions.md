@@ -30,7 +30,7 @@ Outputs:
 
 Parameters:
  - **configuration:** Indicates the build configuration to use. Posible values are `Release` (default) or `Debug`.
- - **solution:** The path where to look for the solution (`.sln` or `.csproj`) to compile and build. Wildcard paths are supported. When multiple solutions are match by a wildcard expression, all of them are build and placed on `outputpath`.
+ - **solution:** The path where to look for the solution (`.sln` or `.sqlproj`) to compile and build. Wildcard paths are supported. When multiple solutions are match by a wildcard expression, all of them are build and placed on `outputpath`.
  - **outputpath:** The path where to store the compiled projects (`.dacpac`).
 
 ## run-sqlpackage
