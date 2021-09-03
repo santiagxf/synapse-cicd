@@ -27,11 +27,11 @@ This guide is intended to get you up and running in using this repository for yo
     ```sql
     IF NOT EXISTS (SELECT [name]
                 FROM [sys].[database_principals]
-                WHERE [type] = N'E' AND [name] = N'<IDENTITY>)')
+                WHERE [type] = N'E' AND [name] = N'<IDENTITY>')
     BEGIN
         CREATE USER [`$(IDENTITY)] FROM EXTERNAL PROVIDER
     END
-    EXEC sp_addrolemember '<ROLE>', [`$(IDENTITY)];
+    EXEC sp_addrolemember '<ROLE>', [<IDENTITY>];
     ```
 
 You should be all set to use this CI/CD implementation.
