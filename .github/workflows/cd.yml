@@ -12,16 +12,21 @@ on:
 jobs:
   deployment:
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    environment: dev
     runs-on: ubuntu-latest
 
     env:
       ARTIFACT_NAME: build
       PROFILE_PATH: profiles
-      ENVIRONMENT_PREFIX: dev
       RESOURCE_GROUP: Analytics.DataPlatform.Group
 
     steps:
       - uses: actions/checkout@v2
+
+      - name: Debug
+        shell: bash
+        run: |
+          echo "::debug:: REF_ENV ${{ github.environment.name }}"
 
       - name: Getting packages to deploy
         uses: dawidd6/action-download-artifact@v2

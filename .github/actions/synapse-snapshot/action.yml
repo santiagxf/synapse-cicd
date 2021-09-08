@@ -43,14 +43,21 @@ runs:
           $source = [regex]::Match($connectionString, 'Data Source=([^;]+)').Groups[1].Value
           $databaseName = $profile.Project.PropertyGroup.TargetDatabaseName
         }
-        else
+
+        if ('${{ inputs.database-server }}' -ne '')
         {
           $source = "${{ inputs.database-server }}"
+          write-host "::debug::Database server is set to $source"
+        }
+
+        if ('${{ inputs.database-name }}' -ne '')
+        {
           $databaseName = "${{ inputs.database-name }}"
+          write-host "::debug::Database name is set to $databaseName"
         }
 
         $resourceName = $source.Split('.')[0]
-        write-host "::debug::Database resource is $source ($databaseName)"
+        write-host "::debug::Database resource for the operation is $source ($databaseName)"
 
         if ('${{ inputs.synapse-workspace }}' -eq 'true')
         {
