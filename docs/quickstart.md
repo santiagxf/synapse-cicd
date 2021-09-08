@@ -7,7 +7,7 @@ This guide is intended to get you up and running in using this repository for yo
  - You will need [Azure Data Studio](https://docs.microsoft.com/en-us/sql/azure-data-studio/download-azure-data-studio) installed in your computer. Alternatively you can use VSCode with the Data Project extension installed, Visual Studio, or SQL Server Data Tools, but we recommend Azure Data Studio because it is lightweight and specific for this scenario. You can see [installation instruction here](https://docs.microsoft.com/en-us/sql/azure-data-studio/download-azure-data-studio). 
  - If you are using Azure Data Studio or VSCode, make sure you have the `SQL Data Project extension` installed. Just open the extensions tab and look for it:
 
- ![](images/ads-extension.png)
+ ![](images/vs-extension.png)
 
 ## Follow this steps to create you first solution:
 
@@ -44,8 +44,8 @@ If order for this CI/CD to correctly interpreat the proposed schemas for the dat
 
  - If you are creating a new project, make sure to select the right platform target. For Azure Synapse pick `Microsoft Azure SQL Data Warehouse`
 
-![](images/ads-new-project.png)
+![](images/project-new.png)
 
  - If you already have an existing project, you can change the target anytime by:
 
-![](images/ads-change-target.png)
+![](images/project-change-target.png)
