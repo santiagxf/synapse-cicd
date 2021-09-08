@@ -17,16 +17,12 @@ jobs:
 
     env:
       ARTIFACT_NAME: build
+      ENVIRONMENT_PREFIX: dev
       PROFILE_PATH: profiles
       RESOURCE_GROUP: Analytics.DataPlatform.Group
 
     steps:
       - uses: actions/checkout@v2
-
-      - name: Debug
-        shell: bash
-        run: |
-          echo "::debug:: REF_ENV ${{ github.environment.name }}"
 
       - name: Getting packages to deploy
         uses: dawidd6/action-download-artifact@v2
@@ -34,13 +30,6 @@ jobs:
           workflow: ci.yml
           name: ${{ env.ARTIFACT_NAME }}
           path: ${{ env.ARTIFACT_NAME }}
-
-      - id: mgmt-login
-        name: Adquiring Azure Resource Management Access Token
-        uses: ./.github/actions/azure-resource-login
-        with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
-          resource-url: "https://management.core.windows.net/"
 
       - id: sql-login
         name: Adquiring SQL Access Token
@@ -74,6 +63,14 @@ jobs:
         with:
           name: deploy
           path: ${{ env.ENVIRONMENT_PREFIX }}.deployreport.MD
+
+      - id: mgmt-login
+        name: Adquiring Azure Resource Management Access Token
+        uses: ./.github/actions/azure-resource-login
+        if: steps.validate-deploy.outputs.ignorable == 'False'
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+          resource-url: "https://management.core.windows.net/"
       
       - id: database-snapshot
         name: Taking a restore point on target database
