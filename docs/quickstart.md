@@ -15,7 +15,7 @@ This guide is intended to get you up and running in using this repository for yo
  2. Open the `src` folder with `Azure Data Studio` and make any change you want into the schema. This repo contains a demo schema for the `AdventureWorks` data warehouse. Feel free to delete the solution and create you own solution if you want. Just make sure that the solution is:
     - Placed in the `src` folder
     - It is a `SQL Data Project`
-    - The target of the project matchs the target database server you will be using (`Azure Synapse` vs `Azure SQL Database`). See the notes at the bottom for more details about how to do this.
+    - The target of the project matchs the target database server you will be using (`Azure Synapse` vs `Azure SQL Database`). See the [notes at the bottom for more details about how to do this](#changing-the-target-database-type-in-azure-data-studio).
  3. Review the `SQL Publishing Profile` file located in `profiles` folder. This file contains the instructions about how deployment should follow. In particular, you will have to change:
     - **TargetDatabaseName:** This is the name of the database targeted in the CI/CD. If you want to specify the database inside of your pipelines instead of in this file, the GitHub Actions support doing so. Check the [Custom Actions documentation](actions.md) to know how to make the changes.
     - **TargetConnectionString:** This is the target database server used in the CI/CD. If you want to specify the database server inside of your pipelines instead of in this file, the GitHub Actions support doing so. Check the [Custom Actions documentation](actions.md) to know how to make the changes.
@@ -40,7 +40,7 @@ You should be all set to use this CI/CD implementation.
 
 ### Changing the target database type in Azure Data Studio
 
-If order for this CI/CD to correctly interpreat the proposed schemas for the database, you will need to set the target database type. In `Azure Data Studio` you can achieve that by:
+In order for this CI/CD to correctly interpreat the proposed schemas for the database, you will need to set the target database type. In `Azure Data Studio` you can achieve that by:
 
  - If you are creating a new project, make sure to select the right platform target. For Azure Synapse pick `Microsoft Azure SQL Data Warehouse`
 
