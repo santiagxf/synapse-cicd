@@ -33,7 +33,7 @@ stages:
             pipeline: 'synapse-ci'
             runVersion: 'latest'
             artifact: ${{ variables.ARTIFACT_NAME }}
-            path: '${{ variables.ARTIFACT_NAME }}'
+            path: '$(Pipeline.Workspace)/${{ variables.ARTIFACT_NAME }}'
             patterns: '*.dacpac'
 
         - template: actions/azure-resource-login/step.yml
