@@ -10,7 +10,7 @@ stages:
  - stage: deploy
    displayName: 'Integrate'
    variables:
-    - name: ARTIFACTS_NAME
+    - name: ARTIFACT_NAME
       value: build
     - name: PROFILE_PATH
       value: profiles
@@ -45,8 +45,8 @@ stages:
         - template: actions/run-sqlpackage/step.yml
           parameters:
             action: 'DeployReport'
-            sourcepath: $(Pipeline.Workspace)/${{ variables.ARTIFACTS_PATH }}
-            outputpath: $(Pipeline.Workspace)/${{ variables.ARTIFACTS_PATH }}/${{ variables.ENVIRONMENT_PREFIX }}
+            sourcepath: $(Pipeline.Workspace)/${{ variables.ARTIFACT_NAME }}
+            outputpath: $(Pipeline.Workspace)/${{ variables.ARTIFACT_NAME }}/${{ variables.ENVIRONMENT_PREFIX }}
             outputfile: 'deployreport.xml'
             profile: ${{ variables.PROFILE_PATH }}/${{ variables.ENVIRONMENT_PREFIX }}.profile.xml
             authtoken: $(sqlToken)
@@ -54,8 +54,8 @@ stages:
         - template: actions/validate-sqlpackage/step.yml
           parameters:
             environment: ${{ variables.ENVIRONMENT_PREFIX }}
-            sqlpackageReport: $(Pipeline.Workspace)/${{ variables.ARTIFACTS_PATH }}/${{ variables.ENVIRONMENT_PREFIX }}/*.xml
-            outputpath: ${{ variables.ARTIFACTS_PATH }}
+            sqlpackageReport: $(Pipeline.Workspace)/${{ variables.ARTIFACT_NAME }}/${{ variables.ENVIRONMENT_PREFIX }}/*.xml
+            outputpath: ${{ variables.ARTIFACT_NAME }}
             outputfile: '${{ variables.ENVIRONMENT_PREFIX }}.deployreport.MD'
             haltonerrors: true
         
@@ -84,7 +84,7 @@ stages:
           parameters:
             action: 'Publish'
             sourcepath: $(Pipeline.Workspace)/${{ variables.ARTIFACT_NAME }}
-            outputpath: $(Pipeline.Workspace)/${{ variables.ARTIFACTS_PATH }}/${{ variables.ENVIRONMENT_PREFIX }}
+            outputpath: $(Pipeline.Workspace)/${{ variables.ARTIFACT_NAME }}/${{ variables.ENVIRONMENT_PREFIX }}
             outputfile: 'deployreport.xml'
             profile: ${{ variables.PROFILE_PATH }}/${{ variables.ENVIRONMENT_PREFIX }}.profile.xml
             authtoken: $(sqlToken)
