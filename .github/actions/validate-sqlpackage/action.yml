@@ -32,18 +32,20 @@ runs:
       name: Validating proposed changes
       shell: pwsh
       run: |
-        Write-Host "::debug::Ensuring target folder '${{ parameters.outputpath }}'"
-        New-Item -Path '${{ parameters.outputpath }}' -ItemType Directory -ErrorAction SilentlyContinue
+        Write-Host "::debug::Ensuring target folder '${{ inputs.outputpath }}'"
+        New-Item -Path '${{ inputs.outputpath }}' -ItemType Directory -ErrorAction SilentlyContinue
 
-        $files = Get-ChildItem "${{ inputs.sqlpackage-report }}"
+        $files = Get-ChildItem "${{ inputs.sqlpackage-report }}" | select FullName -ExpandProperties FullName
         $ignorable = $true
         $errors = $false
+
+        Write-Host "##[debug]The following files were identified: $files"
 
         ForEach($report in $files)
         {
           $packageAnalysis = ${{ github.workspace }}/scripts/actions/validate-sqlpackage/Parse-SqlProfileReport.ps1  `
                                 -Environment "${{ inputs.environment }}"  `
-                                -SqlPackageReport $report.FullName  `
+                                -SqlPackageReport $report  `
                                 -OutputFilePath "${{ inputs.outputpath }}/${{ inputs.outputfile }}"  `
                                 -HaltOnDataIssues ${{ '$' }}${{ inputs.haltonerrors }} `
                                 -Platform "github"
