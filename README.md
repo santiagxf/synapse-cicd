@@ -1,8 +1,8 @@
 [![CI](https://github.com/santiagxf/synapse-cicd/actions/workflows/ci.yml/badge.svg)](https://github.com/santiagxf/synapse-cicd/actions/workflows/ci.yml)
 [![CD](https://github.com/santiagxf/synapse-cicd/actions/workflows/cd.yml/badge.svg)](https://github.com/santiagxf/synapse-cicd/actions/workflows/cd.yml)
-# Azure Synapse CI/CD pipeline with GitHub Workflows
+# Azure Synapse CI/CD pipelines with GitHub Actions or Azure DevOps Pipelines
 
-This repository contains an implementation of a CI/CD pipeline using GitHub Workflows to package, validate and integrate changes into an Azure Synapse Database. This implementation can also be used with Azure SQL Databases, Azure SQL Managed Instances and Microsoft SQL Server running on a VM. The process looks as follows, however, you can utilize the same assets to implement the development process of your choice:
+This repository contains an implementation of a CI/CD pipeline using GitHub Actions or Azure DevOps (whatever you want to use) to package, validate and integrate changes into an Azure Synapse Database. This implementation can also be used with Azure SQL Databases, Azure SQL Managed Instances and Microsoft SQL Server running on a VM. The process looks as follows, however, you can utilize the same assets to implement the development process of your choice:
 
 ![Deployment flow](docs/images/git-process.png)
 
@@ -14,6 +14,11 @@ If you are planing to use this CI/CD implementation in your deployment, follow t
 ## Implementation
 
 This CI/CD implementation relies on the use of [SqlPackage](https://docs.microsoft.com/en-us/sql/tools/sqlpackage/) and [Visual Studio Database Projects](https://docs.microsoft.com/en-us/visualstudio/data-tools/creating-and-managing-databases-and-data-tier-applications-in-visual-studio), which provides a convenient way to define the desired state of a database and apply/evolve the schema to different databases on different environments.
+
+There are two pipelines implementations in the repository:
+
+ - In the `.github` folder, you will find the implementation using GitHub Actions.
+ - in the `.azure-pipelines` folder, you will find the implementation using Azure DevOps Pipelines.
 
 ### About database projects
 
