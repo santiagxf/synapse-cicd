@@ -13,7 +13,7 @@ parameters:
   type: string
   default: ''
 - name: authtoken
-  type: boolean
+  type: string
   default: true
 - name: outputpath
   default: .
