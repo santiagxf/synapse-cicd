@@ -6,7 +6,7 @@ parameters:
   type: string
 - name: outputpath
   type: string
-  default: .
+  default: $(Pipeline.Workspace)
 - name: outputfile
   type: string
   default: 'deployreport.md'
