@@ -22,7 +22,8 @@ stages:
    jobs:
     - job: deployment
       displayName: 'Build'
-      pool: windows-latest
+      pool: 
+        vmImage: 'windows-latest'
       steps:
         - task: DownloadPipelineArtifact@2
           displayName: Getting packages to deploy

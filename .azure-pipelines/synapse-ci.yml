@@ -15,7 +15,8 @@ stages:
    jobs:
     - job: build
       displayName: 'Build'
-      pool: windows-latest
+      pool: 
+        vmImage: 'windows-latest'
       steps:
         - template: actions/dotnet-data-build/step.yml
           parameters:
