@@ -55,11 +55,10 @@ stages:
           parameters:
             environment: ${{ variables.ENVIRONMENT_PREFIX }}
             sqlpackageReport: $(Pipeline.Workspace)/${{ variables.ARTIFACT_NAME }}/${{ variables.ENVIRONMENT_PREFIX }}/*.xml
-            outputpath: ${{ variables.ARTIFACT_NAME }}
             outputfile: '${{ variables.ENVIRONMENT_PREFIX }}.deployreport.MD'
             haltonerrors: true
         
-        - publish:  ${{ variables.ARTIFACT_NAME }}/${{ variables.ENVIRONMENT_PREFIX }}.deployreport.MD
+        - publish:  ${{ variables.ENVIRONMENT_PREFIX }}.deployreport.MD
           displayName: 'Publishing artifacts'
           artifact: 'deploy'
         
