@@ -42,7 +42,8 @@ runs:
                                 -Environment "${{ inputs.environment }}"  `
                                 -SqlPackageReport $report.FullName  `
                                 -OutputFilePath "${{ inputs.outputpath }}/${{ inputs.outputfile }}"  `
-                                -HaltOnDataIssues ${{ '$' }}${{ inputs.haltonerrors }}
+                                -HaltOnDataIssues ${{ '$' }}${{ inputs.haltonerrors }} `
+                                -Platform "github"
           
           $ignorable = $ignorable -and $packageAnalysis.ignorable
           $errors = $errors -or $packageAnalysis.errors

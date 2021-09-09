@@ -38,3 +38,4 @@ steps:
       -AuthToken "${{ parameters.authtoken }}" 
       -Label "${{ parameters.label }}"
       -SynapseWorkspace ${{ '$' }}${{ parameters.synapse-workspace }}
+      -Platform "devops"

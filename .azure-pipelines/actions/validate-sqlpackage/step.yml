@@ -30,7 +30,8 @@ steps:
                               -Environment "${{ parameters.environment }}"  `
                               -SqlPackageReport $report.FullName  `
                               -OutputFilePath "${{ parameters.outputpath }}/${{ parameters.outputfile }}"  `
-                              -HaltOnDataIssues ${{ '$' }}${{ parameters.haltonerrors }}
+                              -HaltOnDataIssues ${{ '$' }}${{ parameters.haltonerrors }} `
+                              -Platform "devops"
         
         $ignorable = $ignorable -and $packageAnalysis.ignorable
         $errors = $errors -or $packageAnalysis.errors

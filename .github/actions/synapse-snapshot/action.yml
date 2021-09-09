@@ -36,7 +36,8 @@ runs:
                                 -ResourceGroup "${{ inputs.resource-group }}"  `
                                 -PublishingProfilePath "${{ inputs.profile }}"  `
                                 -DatabaseServer "${{ inputs.database-server }}"  `
-                                -DatabaseName "${{ inputs.database-name }}"
-                                -AuthToken "${{ inputs.authtoken }}"
-                                -Label "${{ inputs.label }}"
-                                -SynapseWorkspace ${{ '$' }}${{ inputs.synapse-workspace }}
+                                -DatabaseName "${{ inputs.database-name }}" `
+                                -AuthToken "${{ inputs.authtoken }}" `
+                                -Label "${{ inputs.label }}" `
+                                -SynapseWorkspace ${{ '$' }}${{ inputs.synapse-workspace }} `
+                                -Platform "github"
