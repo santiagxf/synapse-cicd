@@ -21,6 +21,7 @@ steps:
   inputs:
     azureSubscription: ${{ parameters.creds }}
     azurePowerShellVersion: LatestVersion
+    ScriptType: InlineScript
     inline: |
       $resourceToken = scripts/actions/azure-resource-login/Get-AzResourceAccessToken.ps1  `
                                 -ResourceUrl "${{ parameters.resourceUrl }}"  `
