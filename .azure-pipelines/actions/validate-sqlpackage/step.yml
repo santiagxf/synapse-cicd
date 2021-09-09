@@ -26,7 +26,7 @@ steps:
 
       ForEach($report in $files)
       {
-        $packageAnalysis = ${{ github.workspace }}/.github/actions/validate-sqlpackage/Parse-SqlProfileReport.ps1  `
+        $packageAnalysis = scripts/actions/validate-sqlpackage/Parse-SqlProfileReport.ps1  `
                               -Environment "${{ parameters.environment }}"  `
                               -SqlPackageReport $report.FullName  `
                               -OutputFilePath "${{ parameters.outputpath }}/${{ parameters.outputfile }}"  `
