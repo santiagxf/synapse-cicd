@@ -43,13 +43,13 @@ steps:
         
         if ('${{ parameters.databaseServer }}' -ne '')
         {
-          $SQLPACKAGE_ARGS="$SQLPACKAGE_CMD `
+          $SQLPACKAGE_ARGS="$SQLPACKAGE_ARGS `
             /TargetServerName:${{ parameters.databaseServer }}"
         }
 
         if ('${{ parameters.databaseName }}' -ne '')
         {
-          $SQLPACKAGE_ARGS="$SQLPACKAGE_CMD `
+          $SQLPACKAGE_ARGS="$SQLPACKAGE_ARGS `
             /TargetDatabaseName:${{ parameters.databaseName }}"
         }
 
@@ -57,7 +57,7 @@ steps:
         {
           $PACKAGE_NAME=$PACKAGE.Split('.')[0]
 
-          $SQLPACKAGE_ARGS="$SQLPACKAGE_CMD `
+          $SQLPACKAGE_ARGS="$SQLPACKAGE_ARGS `
             /OutputPath:${{ parameters.outputpath }}/$PACKAGE_NAME.${{ parameters.outputfile }} \
             /OverwriteFiles:True"
         }
