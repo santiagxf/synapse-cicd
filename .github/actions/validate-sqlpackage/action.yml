@@ -14,7 +14,7 @@ inputs:
     default: .
   outputfile:
     description: 'The output file name, with extension MD'
-    default: 'deployreport.MD'
+    default: 'deployreport.md'
   haltonerrors:
     description: 'If the action should fail when validation errors are found'
     default: true
@@ -38,7 +38,7 @@ runs:
 
         ForEach($report in $files)
         {
-          $packageAnalysis = ${{ github.workspace }}/.github/actions/validate-sqlpackage/Parse-SqlProfileReport.ps1  `
+          $packageAnalysis = ${{ github.workspace }}/scripts/actions/validate-sqlpackage/Parse-SqlProfileReport.ps1  `
                                 -Environment "${{ inputs.environment }}"  `
                                 -SqlPackageReport $report.FullName  `
                                 -OutputFilePath "${{ inputs.outputpath }}/${{ inputs.outputfile }}"  `

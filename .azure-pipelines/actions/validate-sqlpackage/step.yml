@@ -1,0 +1,46 @@
+parameters:
+- name: environment
+  type: string
+  default: 'dev'
+- name: sqlpackage-report
+  type: string
+- name: outputpath
+  type: string
+  default: .
+- name: outputfile
+  type: string
+  default: 'deployreport.md'
+- name: haltonerrors
+  type: boolean
+  default: true
+
+steps:
+- task: PowerShell@2
+  name: validate
+  displayName: 'Validating proposed changes'
+  inputs:
+    script: |
+      $files = Get-ChildItem "${{ parameters.sqlpackage-report }}"
+      $ignorable = $true
+      $errors = $false
+
+      ForEach($report in $files)
+      {
+        $packageAnalysis = ${{ github.workspace }}/.github/actions/validate-sqlpackage/Parse-SqlProfileReport.ps1  `
+                              -Environment "${{ parameters.environment }}"  `
+                              -SqlPackageReport $report.FullName  `
+                              -OutputFilePath "${{ parameters.outputpath }}/${{ parameters.outputfile }}"  `
+                              -HaltOnDataIssues ${{ '$' }}${{ parameters.haltonerrors }}
+        
+        $ignorable = $ignorable -and $packageAnalysis.ignorable
+        $errors = $errors -or $packageAnalysis.errors
+      }
+
+      write-host "##vso[task.logdetail]Setting 'ignorable' variable to $ignorable"
+      write-host "##vso[task.logdetail]Set the 'errors' variable to $errors"
+      write-host "##vso[task.setvariable variable=ignorable;]$ignorable"
+      write-host "##vso[task.setvariable variable=errors;]$errors"
+  target:
+    settableVariables:
+    - ignorable
+    - errors

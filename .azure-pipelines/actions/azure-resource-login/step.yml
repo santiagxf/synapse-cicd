@@ -1,0 +1,33 @@
+parameters:
+- name: creds
+  type: string
+- name: resource-url
+  type: string
+  default: 'Any CPU'
+- name: resource-type-name
+  type: string
+  default: 'Arm'
+- name: step-name
+  type: string
+  default: 'resource-login'
+- name: var-name
+  type: string
+  default: 'token'
+
+steps:
+- task: AzurePowerShell@5
+  name: ${{ parameters.step-name }}
+  displayName: 'Adquiring Access Token for ${{ parameters.resource-url }}'
+  inputs:
+    azureSubscription: ${{ parameters.creds }}
+    azurePowerShellVersion: LatestVersion
+    script: |
+      $resourceToken = ${{ github.workspace }}/scripts/actions/azure-resource-login/Get-AzResourceAccessToken.ps1  `
+                                -ResourceUrl "${{ parameters.resource-url }}"  `
+                                -ResourceTypeName "${{ parameters.resource-type-name }}"
+        
+      write-host "##vso[task.logdetail]Setting '${{ parameters.var-name }}' variable to $resourceToken"
+      write-host "##vso[task.setvariable variable=${{ parameters.var-name }};]$resourceToken"
+  target:
+    settableVariables:
+    - ${{ parameters.var-name }}

@@ -26,10 +26,9 @@ runs:
       name: Adquiring access token
       shell: pwsh
       run: |
-        Set-PSRepository PSGallery -InstallationPolicy Trusted
-        Install-Module -Name Az.Accounts -AllowClobber
-        $context = Get-AzContext
-        $resourceToken = (Get-AzAccessToken -ResourceUrl '${{ inputs.resource-url }}' -DefaultProfile $context).Token
+        $resourceToken = ${{ github.workspace }}/scripts/actions/azure-resource-login/Get-AzResourceAccessToken.ps1  `
+                                -ResourceUrl "${{ inputs.resource-url }}"  `
+                                -ResourceTypeName "${{ inputs.resource-type-name }}"
         
         write-host "::debug::Setting 'token' variable to $resourceToken"
         write-host "::set-output name=token::$resourceToken"

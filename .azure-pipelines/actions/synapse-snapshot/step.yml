@@ -1,0 +1,40 @@
+parameters:
+- name: resource-group
+  type: string
+- name: sourcepath
+  type: string
+- name: profile
+  type: string
+  default: ''
+- name: database-server
+  type: string
+  default: ''
+- name: database-name
+  type: string
+  default: ''
+- name: label
+  type: string
+  default: 'cicd-job-$(System.JobId)'
+- name: authtoken
+  type: boolean
+- name: synapse-workspace
+  type: boolean
+  default: true
+- name: creds
+  type: string
+
+steps:
+- task: AzurePowerShell@5
+  displayName: 'Identifying proposed changes'
+  azurePowerShellVersion: LatestVersion
+  inputs:
+    azureSubscription: ${{ parameters.creds }}
+    ScriptPath: 'scripts/actions/synapse-snapshot/New-AzSynapseRestorePoint.ps1'
+    ScriptArguments: >
+      -ResourceGroup "${{ parameters.resource-group }}"  
+      -PublishingProfilePath "${{ parameters.profile }}" 
+      -DatabaseServer "${{ parameters.database-server }}" 
+      -DatabaseName "${{ parameters.database-name }}" 
+      -AuthToken "${{ parameters.authtoken }}" 
+      -Label "${{ parameters.label }}"
+      -SynapseWorkspace ${{ '$' }}${{ parameters.synapse-workspace }}

@@ -32,65 +32,11 @@ runs:
       name: Creating a restore point
       shell: pwsh
       run: |
-        Set-PSRepository PSGallery -InstallationPolicy Trusted
-        Install-Module -Name Az.Accounts -AllowClobber
-        Install-Module -Name Az.Sql -AllowClobber
-        
-        if ('${{ inputs.profile }}' -ne '')
-        {
-          [xml] $profile = Get-Content ${{ inputs.profile }}
-          $connectionString = $profile.Project.PropertyGroup.TargetConnectionString
-          $source = [regex]::Match($connectionString, 'Data Source=([^;]+)').Groups[1].Value
-          $databaseName = $profile.Project.PropertyGroup.TargetDatabaseName
-        }
-
-        if ('${{ inputs.database-server }}' -ne '')
-        {
-          $source = "${{ inputs.database-server }}"
-          write-host "::debug::Database server is set to $source"
-        }
-
-        if ('${{ inputs.database-name }}' -ne '')
-        {
-          $databaseName = "${{ inputs.database-name }}"
-          write-host "::debug::Database name is set to $databaseName"
-        }
-
-        $resourceName = $source.Split('.')[0]
-        write-host "::debug::Database resource for the operation is $source ($databaseName)"
-
-        if ('${{ inputs.synapse-workspace }}' -eq 'true')
-        {
-          $subscriptionId = (Get-AzContext).Subscription.Id
-          $requestUrl = "https://management.azure.com/subscriptions/$subscriptionId/resourceGroups/${{ inputs.resource-group }}/providers/Microsoft.Synapse/workspaces/$resourceName/sqlPools/$databaseName/restorePoints?api-version=2021-03-01"
-          $headers = @{
-            'Content-Type'='application/json';
-            'Authorization'='Bearer ${{ inputs.authtoken }}' 
-          }
-          $payload = @{
-            'restorePointLabel'='${{ inputs.label }}'
-          }
-          write-host "::debug::Calling $requestUrl over POST"
-          $request = Invoke-RestMethod -Method Post -Uri $requestUrl -Headers $headers -Body (ConvertTo-Json $payload)
-        }
-        else
-        {
-          $creationRequest = New-AzSqlDatabaseRestorePoint `
-            -DatabaseName $databaseName `
-            -ServerName $resourceName `
-            -ResourceGroupName ${{ inputs.resource-group }} `
-            -RestorePointLabel ${{ inputs.label }}
-      
-          $waitDelay = 5
-          write-host "Waiting for the creation job" -NoNewLine
-          while (($creationRequest | Get-AzSqlDatabaseRestorePoint).Status -eq 'InProgress') 
-          {
-              write-host '.' -NoNewLine
-              Start-Sleep $waitDelay
-          }
-
-          write-host " [OK]" -ForegroundColor Green
-        }
-
-        
-
+        ${{ github.workspace }}/scripts/actions/synapse-snapshot/New-AzSynapseRestorePoint.ps1  `
+                                -ResourceGroup "${{ inputs.resource-group }}"  `
+                                -PublishingProfilePath "${{ inputs.profile }}"  `
+                                -DatabaseServer "${{ inputs.database-server }}"  `
+                                -DatabaseName "${{ inputs.database-name }}"
+                                -AuthToken "${{ inputs.authtoken }}"
+                                -Label "${{ inputs.label }}"
+                                -SynapseWorkspace ${{ '$' }}${{ inputs.synapse-workspace }}

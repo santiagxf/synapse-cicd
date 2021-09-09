@@ -1,0 +1,51 @@
+trigger: none
+
+stages:
+ - stage: plan
+   displayName: 'Integrate'
+   variables:
+    - name: ARTIFACTS_PATH
+      value: build
+    - name: PROFILE_PATH
+      value: profiles
+    - name: ENVIRONMENT_PREFIX
+      value: dev
+    - name: azureServiceConnectionName
+      value: DataOpsTemplate-DEV
+   jobs:
+    - job: build
+      displayName: 'Build'
+      pool: windows-latest
+      steps:
+        - template: actions/dotnet-data-build/step.yml
+          parameters:
+            configuration: 'Release'
+            solution: src/**/*.sqlproj
+            outputpath: $(Pipeline.Workspace)/${{ variables.ARTIFACTS_PATH }}
+        
+        - template: actions/azure-resource-login/step.yml
+          parameters:
+            creds: ${{ variables.azureServiceConnectionName }}
+            resource-url: "https://database.windows.net"
+            step-name: "sql-login"
+        
+        - template: actions/run-sqlpackage/step.yml
+          parameters:
+            action: 'DeployReport'
+            sourcepath: $(Pipeline.Workspace)/${{ variables.ARTIFACTS_PATH }}
+            outputpath: $(Pipeline.Workspace)/${{ variables.ARTIFACTS_PATH }}
+            outputfile: 'deployreport.xml'
+            profile: ${{ variables.PROFILE_PATH }}/${{ variables.ENVIRONMENT_PREFIX }}.profile.xml
+            authtoken: $(token)
+        
+        - template: actions/validate-sqlpackage/step.yml
+          parameters:
+            environment: ${{ variables.ENVIRONMENT_PREFIX }}
+            sqlpackage-report: $(Pipeline.Workspace)/${{ variables.ARTIFACTS_PATH }}/*.xml
+            outputpath: ${{ variables.ARTIFACTS_PATH }}
+            outputfile: 'deployreport.MD'
+            haltonerrors: true
+        
+        - publish: ${{ variables.artifactsPath }}
+          displayName: 'Publishing artifacts'
+          artifact: 'build'

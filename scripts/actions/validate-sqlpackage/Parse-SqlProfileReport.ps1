@@ -1,12 +1,20 @@
 param
 (
+    # The name of the environment the deploy belong to. This is used just inside the report content
     [Parameter(Mandatory)]
     [ValidateSet("dev", "qa", "prod", "sandbox")]
     [String]$Environment,
+    # The Deploy Report that was generated with SqlPackage and you want to validate
     [Parameter(Mandatory)]
     [String]$SqlPackageReport,
+    # The markdown file name
     [String]$OutputFilePath  = "sql_package_summary.MD",
-    [bool]$HaltOnDataIssues = $true
+    # Indicated if the script should throw an exception when an issue is found
+    [bool]$HaltOnDataIssues = $true,
+    # Target platform where the action is running
+    [Parameter(Mandatory)]
+    [ValidateSet("github", "devops")]
+    [string]$Platform
 )
 
 function Write-TableOperation {
@@ -28,6 +36,40 @@ function Write-TableIssue {
 
     "| {0} | {1} | {2} |" -f $issue, $item.Id, $item.Value | Add-Content -Path $OutputFilePath
 }
+
+function Log-Debug($args){
+    if ($Platform -eq "github") {
+        Write-Host "::debug::$args"
+    }
+    else {
+        Write-Host "##vso[task.logdetail] $args"
+    }
+}
+
+function Log-Info($args, $filename){
+    if ($Platform -eq "devops") {
+        Write-Host "##vso[task.logissue type=info] $args"
+    }
+}
+
+function Log-Warning($args, $filename){
+    if ($Platform -eq "github") {
+        Write-Host "::warning file=$filename::$args"
+    }
+    else {
+        Write-Host "##vso[task.logissue type=warning] $args"
+    }
+}
+
+function Log-Error($args, $filename){
+    if ($Platform -eq "github") {
+        Write-Host "::error::$file=$filename::$args"
+    }
+    else {
+        Write-Host "##vso[task.logissue type=error] $args"
+    }
+}
+
 
 Write-Debug 'Creating report header'
 $Environment = $Environment.ToUpper()
@@ -53,12 +95,12 @@ $issues = $report.DeploymentReport.Alerts.Alert | ? -Property Name -EQ 'DataIssu
 if ($issues) {
     $issues | foreach {
         " - {0}" -f $_.Issue.Value | Add-Content -Path $OutputFilePath
-        Write-Host "::error file=$SqlPackageReport::" $_.Issue.Value
+        Log-Error -args $_.Issue.Value -filename $SqlPackageReport
     }
 }
 else {
     Add-Content -Path $OutputFilePath -Value " - No data issues where detected"
-    Write-Host "::debug::No data issues where detected"
+    Log-Debug -args "No data issues where detected"
 }
 
 
@@ -73,12 +115,12 @@ if ($alerts) {
         "| -- | ------- | ---------------- |" | Add-Content -Path $OutputFilePath
     } {
         Write-TableIssue -issue $_.Name -item $_.Issue -OutputFilePath $OutputFilePath
-        Write-Host "::warning file=$SqlPackageReport::Potential harmful operation detected: " + $_.Name
+        Log-Warning -args "Potential harmful operation detected: $_.Name" -filename $SqlPackageReport
     }
 }
 else {
     Add-Content -Path $OutputFilePath -Value " - No harmul operations were detected in the solution"
-    Write-Host "::debug::No harmul operations were detected in the solution"
+    Log-Debug -args "No harmul operations were detected in the solution"
 }
 
 Write-Debug 'Reading operations'
@@ -103,7 +145,7 @@ if ($operations)
 else {
     $ignorable = $true
     Add-Content -Path $OutputFilePath -Value " - No changes will be introduced"
-    Write-Host "::debug::No changes will be introduced"
+    Log-Debug -args "No changes will be introduced"
 }
 
 if ($issues -And $HaltOnDataIssues)

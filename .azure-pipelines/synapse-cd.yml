@@ -1,0 +1,90 @@
+trigger:
+  branches:
+    include:
+    - main
+  paths:
+    include:
+    - src/*
+
+stages:
+ - stage: deploy
+   displayName: 'Integrate'
+   variables:
+    - name: ARTIFACTS_NAME
+      value: build
+    - name: PROFILE_PATH
+      value: profiles
+    - name: ENVIRONMENT_PREFIX
+      value: dev
+    - name: azureServiceConnectionName
+      value: DataOpsTemplate-DEV
+
+   jobs:
+    - job: deployment
+      displayName: 'Build'
+      pool: windows-latest
+      steps:
+        - task: DownloadPipelineArtifact@2
+          displayName: Getting packages to deploy
+          inputs:
+            source: 'specific'
+            project: $(System.TeamProjectId)
+            pipeline: 'synapse-ci'
+            runVersion: 'latest'
+            artifact: ${{ variables.ARTIFACT_NAME }}
+            path: '${{ variables.ARTIFACT_NAME }}'
+
+        - template: actions/azure-resource-login/step.yml
+          parameters:
+            creds: ${{ variables.azureServiceConnectionName }}
+            resource-url: "https://database.windows.net"
+            step-name: "sql-login"
+            var-name: "sqlToken"
+        
+        - template: actions/run-sqlpackage/step.yml
+          parameters:
+            action: 'DeployReport'
+            sourcepath: $(Pipeline.Workspace)/${{ variables.ARTIFACTS_PATH }}
+            outputpath: $(Pipeline.Workspace)/${{ variables.ARTIFACTS_PATH }}/${{ variables.ENVIRONMENT_PREFIX }}
+            outputfile: 'deployreport.xml'
+            profile: ${{ variables.PROFILE_PATH }}/${{ variables.ENVIRONMENT_PREFIX }}.profile.xml
+            authtoken: $(sqlToken)
+        
+        - template: actions/validate-sqlpackage/step.yml
+          parameters:
+            environment: ${{ variables.ENVIRONMENT_PREFIX }}
+            sqlpackage-report: $(Pipeline.Workspace)/${{ variables.ARTIFACTS_PATH }}/${{ variables.ENVIRONMENT_PREFIX }}/*.xml
+            outputpath: ${{ variables.ARTIFACTS_PATH }}
+            outputfile: '${{ variables.ENVIRONMENT_PREFIX }}.deployreport.MD'
+            haltonerrors: true
+        
+        - publish:  ${{ variables.ENVIRONMENT_PREFIX }}.deployreport.MD
+          displayName: 'Publishing artifacts'
+          artifact: 'deploy'
+        
+        - template: actions/azure-resource-login/step.yml
+          condition: eq(variables['validate.ignorable'], false)
+          parameters:
+            creds: ${{ variables.azureServiceConnectionName }}
+            resource-url: "https://management.core.windows.net/"
+            step-name: "mgnt-login"
+            var-name: "mgntToken"
+
+        - template: actions/synapse-snapshot/step.yml
+          condition: eq(variables['validate.ignorable'], false)
+          parameters:
+            resource-group: ${{ variables.RESOURCE_GROUP }}
+            profile: ${{ variables.PROFILE_PATH }}/${{ variables.ENVIRONMENT_PREFIX }}.profile.xml
+            authtoken: $(mgntToken)
+            synapse-workspace: true
+        
+        - template: actions/run-sqlpackage/step.yml
+          parameters:
+            action: 'Publish'
+            sourcepath: $(Pipeline.Workspace)/${{ variables.ARTIFACT_NAME }}
+            outputpath: $(Pipeline.Workspace)/${{ variables.ARTIFACTS_PATH }}/${{ variables.ENVIRONMENT_PREFIX }}
+            outputfile: 'deployreport.xml'
+            profile: ${{ variables.PROFILE_PATH }}/${{ variables.ENVIRONMENT_PREFIX }}.profile.xml
+            authtoken: $(sqlToken)
+
+        

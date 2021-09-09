@@ -64,7 +64,7 @@ jobs:
           name: deploy
           path: ${{ env.ENVIRONMENT_PREFIX }}.deployreport.MD
 
-      - id: mgmt-login
+      - id: mgnt-login
         name: Adquiring Azure Resource Management Access Token
         uses: ./.github/actions/azure-resource-login
         if: steps.validate-deploy.outputs.ignorable == 'False'
@@ -79,7 +79,7 @@ jobs:
         with:
           resource-group: ${{ env.RESOURCE_GROUP }}
           profile: ${{ github.workspace }}/${{ env.PROFILE_PATH }}/${{ env.ENVIRONMENT_PREFIX }}.profile.xml
-          authtoken: ${{ steps.mgmt-login.outputs.token }}
+          authtoken: ${{ steps.mgnt-login.outputs.token }}
           synapse-workspace: true
 
       - id: deploy-target

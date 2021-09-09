@@ -1,0 +1,68 @@
+parameters:
+- name: action
+  type: string
+- name: sourcepath
+  type: string
+- name: profile
+  type: string
+  default: ''
+- name: database-server
+  type: string
+  default: ''
+- name: database-name
+  type: string
+  default: ''
+- name: authtoken
+  type: boolean
+  default: true
+- name: outputpath
+  default: .
+- name: outputfile
+  default: 'deployreport.xml' 
+
+steps:
+- task: PowerShell@2
+  displayName: 'Identifying proposed changes'
+  inputs:
+    script: |
+      Write-Host "##vso[task.logdetail]Ensuring target folder '${{ parameters.outputpath }}'"
+      New-Item -Path '${{ parameters.outputpath }}' -ItemType Directory
+      
+      Write-Host "##vso[task.logdetail]Looking for dacpac files at '${{ parameters.sourcepath }}'"
+      $PACKAGE_PATHS = Get-ChildItem "${{ parameters.sourcepath }}"
+
+      ForEach($PACKAGE in $PACKAGE_PATHS)
+      {
+        Write-Host "##vso[task.logdetail]Runing ${{ parameters.action }} on package $PACKAGE"
+
+        $SQLPACKAGE_ARGS="/action:${{ parameters.action }} `
+                          /sourcefile:${{ parameters.sourcepath }}/$PACKAGE `
+                          /Profile:${{ parameters.profile }} `
+                          /AccessToken:${{ parameters.authtoken }})"
+        
+        if ('${{ parameters.database-server }}' -ne '')
+        {
+          $SQLPACKAGE_ARGS="$SQLPACKAGE_CMD `
+            /TargetServerName:${{ parameters.database-server }}"
+        }
+
+        if ('${{ parameters.database-name }}' -ne '')
+        {
+          $SQLPACKAGE_ARGS="$SQLPACKAGE_CMD `
+            /TargetDatabaseName:${{ parameters.database-name }}"
+        }
+
+        if ('${{ parameters.action }}' -ne 'Publish')
+        {
+          $PACKAGE_NAME=$PACKAGE.Split('.')[0]
+
+          $SQLPACKAGE_ARGS="$SQLPACKAGE_CMD `
+            /OutputPath:${{ parameters.outputpath }}/$PACKAGE_NAME.${{ parameters.outputfile }} \
+            /OverwriteFiles:True"
+        }
+
+        Write-Host "##vso[task.logdetail]SqlPackage args are '$SQLPACKAGE_ARGS'"
+        & "C:\Program Files\Microsoft SQL Server\150\DAC\bin\SqlPackage.exe" $SQLPACKAGE_ARGS
+      }
+
+      

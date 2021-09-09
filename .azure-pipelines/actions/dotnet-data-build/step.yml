@@ -1,0 +1,21 @@
+parameters:
+- name: solution
+  type: string
+- name: platform
+  type: string
+  default: 'Any CPU'
+- name: configuration
+  type: string
+  default: 'Release'
+- name: outputpath
+  type: string
+
+steps:
+- task: VSBuild@1
+  displayName: 'Build database package'
+  inputs:
+    vsVersion: latest
+    solution: '${{ parameters.solution }}'
+    platform: '${{ parameters.platform }}'
+    configuration: '${{ parameters.configuration }}'
+    msbuildArgs: '/p:OutputPath="${{ parameters.outputpath }}"'
