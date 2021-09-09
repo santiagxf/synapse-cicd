@@ -35,7 +35,7 @@ runs:
         Write-Host "::debug::Ensuring target folder '${{ inputs.outputpath }}'"
         New-Item -Path '${{ inputs.outputpath }}' -ItemType Directory -ErrorAction SilentlyContinue
 
-        $files = Get-ChildItem "${{ inputs.sqlpackage-report }}" | select FullName -ExpandProperties FullName
+        $files = Get-ChildItem "${{ inputs.sqlpackage-report }}" | select FullName -ExpandProperty FullName
         $ignorable = $true
         $errors = $false
 
