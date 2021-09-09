@@ -24,15 +24,17 @@ steps:
       Write-Host "##[debug]Ensuring target folder '${{ parameters.outputpath }}'"
       New-Item -Path '${{ parameters.outputpath }}' -ItemType Directory -ErrorAction SilentlyContinue
 
-      $files = Get-ChildItem "${{ parameters.sqlpackageReport }}"
+      $files = Get-ChildItem ${{ parameters.sqlpackageReport }} | select Name -ExpandProperties Name
       $ignorable = $true
       $errors = $false
+
+      Write-Host "##[debug]The following files were identified: $files"
 
       ForEach($report in $files)
       {
         $packageAnalysis = scripts/actions/validate-sqlpackage/Parse-SqlProfileReport.ps1  `
                               -Environment "${{ parameters.environment }}"  `
-                              -SqlPackageReport $report.FullName  `
+                              -SqlPackageReport $report  `
                               -OutputFilePath "${{ parameters.outputpath }}/${{ parameters.outputfile }}"  `
                               -HaltOnDataIssues ${{ '$' }}${{ parameters.haltonerrors }} `
                               -Platform "devops"
