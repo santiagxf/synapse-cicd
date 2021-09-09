@@ -41,7 +41,7 @@ stages:
         - template: actions/validate-sqlpackage/step.yml
           parameters:
             environment: ${{ variables.ENVIRONMENT_PREFIX }}
-            sqlpackage-report: $(Pipeline.Workspace)/${{ variables.ARTIFACTS_PATH }}/*.xml
+            sqlpackageReport: $(Pipeline.Workspace)/${{ variables.ARTIFACTS_PATH }}/*.xml
             outputpath: ${{ variables.ARTIFACTS_PATH }}
             outputfile: 'deployreport.MD'
             haltonerrors: true

@@ -2,7 +2,7 @@ parameters:
 - name: environment
   type: string
   default: 'dev'
-- name: sqlpackage-report
+- name: sqlpackageReport
   type: string
 - name: outputpath
   type: string
@@ -20,7 +20,7 @@ steps:
   displayName: 'Validating proposed changes'
   inputs:
     script: |
-      $files = Get-ChildItem "${{ parameters.sqlpackage-report }}"
+      $files = Get-ChildItem "${{ parameters.sqlpackageReport }}"
       $ignorable = $true
       $errors = $false
 

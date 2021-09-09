@@ -53,7 +53,7 @@ stages:
         - template: actions/validate-sqlpackage/step.yml
           parameters:
             environment: ${{ variables.ENVIRONMENT_PREFIX }}
-            sqlpackage-report: $(Pipeline.Workspace)/${{ variables.ARTIFACTS_PATH }}/${{ variables.ENVIRONMENT_PREFIX }}/*.xml
+            sqlpackageReport: $(Pipeline.Workspace)/${{ variables.ARTIFACTS_PATH }}/${{ variables.ENVIRONMENT_PREFIX }}/*.xml
             outputpath: ${{ variables.ARTIFACTS_PATH }}
             outputfile: '${{ variables.ENVIRONMENT_PREFIX }}.deployreport.MD'
             haltonerrors: true
@@ -73,10 +73,10 @@ stages:
         - template: actions/synapse-snapshot/step.yml
           condition: eq(variables['validate.ignorable'], false)
           parameters:
-            resource-group: ${{ variables.RESOURCE_GROUP }}
+            resourceGroup: ${{ variables.RESOURCE_GROUP }}
             profile: ${{ variables.PROFILE_PATH }}/${{ variables.ENVIRONMENT_PREFIX }}.profile.xml
             authtoken: $(mgntToken)
-            synapse-workspace: true
+            synapseWorkspace: true
         
         - template: actions/run-sqlpackage/step.yml
           parameters:

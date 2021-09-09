@@ -6,10 +6,10 @@ parameters:
 - name: profile
   type: string
   default: ''
-- name: database-server
+- name: databaseServer
   type: string
   default: ''
-- name: database-name
+- name: databaseName
   type: string
   default: ''
 - name: authtoken
@@ -40,16 +40,16 @@ steps:
                           /Profile:${{ parameters.profile }} `
                           /AccessToken:${{ parameters.authtoken }})"
         
-        if ('${{ parameters.database-server }}' -ne '')
+        if ('${{ parameters.databaseServer }}' -ne '')
         {
           $SQLPACKAGE_ARGS="$SQLPACKAGE_CMD `
-            /TargetServerName:${{ parameters.database-server }}"
+            /TargetServerName:${{ parameters.databaseServer }}"
         }
 
-        if ('${{ parameters.database-name }}' -ne '')
+        if ('${{ parameters.databaseName }}' -ne '')
         {
           $SQLPACKAGE_ARGS="$SQLPACKAGE_CMD `
-            /TargetDatabaseName:${{ parameters.database-name }}"
+            /TargetDatabaseName:${{ parameters.databaseName }}"
         }
 
         if ('${{ parameters.action }}' -ne 'Publish')
