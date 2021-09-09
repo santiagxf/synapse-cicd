@@ -87,5 +87,6 @@ stages:
             outputfile: 'deployreport.xml'
             profile: ${{ variables.PROFILE_PATH }}/${{ variables.ENVIRONMENT_PREFIX }}.profile.xml
             authtoken: $(sqlToken)
+            condition: eq(variables['validate.ignorable'], false)
 
         

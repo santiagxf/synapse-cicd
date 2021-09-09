@@ -13,10 +13,14 @@ parameters:
 - name: varName
   type: string
   default: 'token'
+- name: condition
+  type: boolean
+  default: true
 
 steps:
 - task: AzurePowerShell@5
   name: ${{ parameters.stepName }}
+  condition: ${{ parameters.condition }}
   displayName: 'Adquiring Access Token for ${{ parameters.resourceUrl }}'
   inputs:
     azureSubscription: ${{ parameters.creds }}
