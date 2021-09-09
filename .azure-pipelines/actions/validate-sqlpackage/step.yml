@@ -24,7 +24,7 @@ steps:
       Write-Host "##[debug]Ensuring target folder '${{ parameters.outputpath }}'"
       New-Item -Path '${{ parameters.outputpath }}' -ItemType Directory -ErrorAction SilentlyContinue
 
-      $files = Get-ChildItem ${{ parameters.sqlpackageReport }} | select FullName -ExpandProperties FullName
+      $files = Get-ChildItem ${{ parameters.sqlpackageReport }} | select FullName -ExpandProperty FullName
       $ignorable = $true
       $errors = $false
 
