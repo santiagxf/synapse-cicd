@@ -9,7 +9,7 @@ parameters:
   default: 'Arm'
 - name: stepName
   type: string
-  default: 'resource-login'
+  default: 'resourceLogin'
 - name: varName
   type: string
   default: 'token'
