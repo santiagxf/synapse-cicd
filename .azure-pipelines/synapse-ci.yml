@@ -31,6 +31,7 @@ stages:
         
         - template: actions/run-sqlpackage/step.yml
           parameters:
+            displayName: Identifying proposed changes
             action: 'DeployReport'
             sourcepath: $(Pipeline.Workspace)/${{ variables.ARTIFACTS_PATH }}
             outputpath: $(Pipeline.Workspace)/${{ variables.ARTIFACTS_PATH }}
