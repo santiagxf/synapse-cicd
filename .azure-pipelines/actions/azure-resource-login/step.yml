@@ -1,33 +1,33 @@
 parameters:
 - name: creds
   type: string
-- name: resource-url
+- name: resourceUrl
   type: string
   default: 'Any CPU'
-- name: resource-type-name
+- name: resourceTypeName
   type: string
   default: 'Arm'
-- name: step-name
+- name: stepName
   type: string
   default: 'resource-login'
-- name: var-name
+- name: varName
   type: string
   default: 'token'
 
 steps:
 - task: AzurePowerShell@5
-  name: ${{ parameters.step-name }}
-  displayName: 'Adquiring Access Token for ${{ parameters.resource-url }}'
+  name: ${{ parameters.stepName }}
+  displayName: 'Adquiring Access Token for ${{ parameters.resourceUrl }}'
   inputs:
     azureSubscription: ${{ parameters.creds }}
     azurePowerShellVersion: LatestVersion
     script: |
       $resourceToken = ${{ github.workspace }}/scripts/actions/azure-resource-login/Get-AzResourceAccessToken.ps1  `
-                                -ResourceUrl "${{ parameters.resource-url }}"  `
-                                -ResourceTypeName "${{ parameters.resource-type-name }}"
+                                -ResourceUrl "${{ parameters.resourceUrl }}"  `
+                                -ResourceTypeName "${{ parameters.resourceTypeName }}"
         
-      write-host "##vso[task.logdetail]Setting '${{ parameters.var-name }}' variable to $resourceToken"
-      write-host "##vso[task.setvariable variable=${{ parameters.var-name }};]$resourceToken"
+      write-host "##vso[task.logdetail]Setting '${{ parameters.varName }}' variable to $resourceToken"
+      write-host "##vso[task.setvariable variable=${{ parameters.varName }};]$resourceToken"
   target:
     settableVariables:
-    - ${{ parameters.var-name }}
+    - ${{ parameters.varName }}

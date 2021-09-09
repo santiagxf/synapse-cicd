@@ -37,9 +37,9 @@ stages:
         - template: actions/azure-resource-login/step.yml
           parameters:
             creds: ${{ variables.azureServiceConnectionName }}
-            resource-url: "https://database.windows.net"
-            step-name: "sql-login"
-            var-name: "sqlToken"
+            resourceUrl: "https://database.windows.net"
+            stepName: "sql-login"
+            varName: "sqlToken"
         
         - template: actions/run-sqlpackage/step.yml
           parameters:
@@ -66,9 +66,9 @@ stages:
           condition: eq(variables['validate.ignorable'], false)
           parameters:
             creds: ${{ variables.azureServiceConnectionName }}
-            resource-url: "https://management.core.windows.net/"
-            step-name: "mgnt-login"
-            var-name: "mgntToken"
+            resourceUrl: "https://management.core.windows.net/"
+            stepName: "mgnt-login"
+            varName: "mgntToken"
 
         - template: actions/synapse-snapshot/step.yml
           condition: eq(variables['validate.ignorable'], false)
