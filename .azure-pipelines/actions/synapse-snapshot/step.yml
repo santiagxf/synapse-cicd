@@ -16,7 +16,7 @@ parameters:
   type: string
   default: 'cicd-job-$(System.JobId)'
 - name: authtoken
-  type: boolean
+  type: string
 - name: synapseWorkspace
   type: boolean
   default: true
