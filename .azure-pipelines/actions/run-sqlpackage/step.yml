@@ -58,7 +58,7 @@ steps:
           $PACKAGE_NAME=$PACKAGE.Split('.')[0]
 
           $SQLPACKAGE_ARGS="$SQLPACKAGE_ARGS `
-            /OutputPath:${{ parameters.outputpath }}/$PACKAGE_NAME.${{ parameters.outputfile }} \
+            /OutputPath:${{ parameters.outputpath }}/$PACKAGE_NAME.${{ parameters.outputfile }} `
             /OverwriteFiles:True"
         }
 
