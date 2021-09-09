@@ -22,7 +22,7 @@ steps:
     azureSubscription: ${{ parameters.creds }}
     azurePowerShellVersion: LatestVersion
     script: |
-      $resourceToken = ${{ github.workspace }}/scripts/actions/azure-resource-login/Get-AzResourceAccessToken.ps1  `
+      $resourceToken = scripts/actions/azure-resource-login/Get-AzResourceAccessToken.ps1  `
                                 -ResourceUrl "${{ parameters.resourceUrl }}"  `
                                 -ResourceTypeName "${{ parameters.resourceTypeName }}"
         
