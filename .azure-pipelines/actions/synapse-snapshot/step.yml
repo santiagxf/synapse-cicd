@@ -29,10 +29,10 @@ parameters:
 steps:
 - task: AzurePowerShell@5
   displayName: 'Identifying proposed changes'
-  azurePowerShellVersion: 
   condition: ${{ parameters.condition }}
   inputs:
     azureSubscription: ${{ parameters.creds }}
+    azurePowerShellVersion: LatestVersion
     ScriptPath: 'scripts/actions/synapse-snapshot/New-AzSynapseRestorePoint.ps1'
     ScriptArguments: >
       -ResourceGroup "${{ parameters.resourceGroup }}"  
