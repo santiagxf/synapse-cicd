@@ -4,9 +4,8 @@ name: CI
 on:
   push:
     paths:
-    - '**'
-    - '!docs/**'
-    - '!README.md'
+    - '.github/**'
+    - 'src/**'
 
   workflow_dispatch:
 

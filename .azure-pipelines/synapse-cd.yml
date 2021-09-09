@@ -17,7 +17,7 @@ stages:
     - name: ENVIRONMENT_PREFIX
       value: dev
     - name: azureServiceConnectionName
-      value: DataOpsTemplate-DEV
+      value: rg-dataplatform-dev
 
    jobs:
     - job: deployment
