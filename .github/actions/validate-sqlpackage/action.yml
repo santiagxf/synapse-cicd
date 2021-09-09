@@ -32,6 +32,9 @@ runs:
       name: Validating proposed changes
       shell: pwsh
       run: |
+        Write-Host "::debug::Ensuring target folder '${{ parameters.outputpath }}'"
+        New-Item -Path '${{ parameters.outputpath }}' -ItemType Directory -ErrorAction SilentlyContinue
+
         $files = Get-ChildItem "${{ inputs.sqlpackage-report }}"
         $ignorable = $true
         $errors = $false
