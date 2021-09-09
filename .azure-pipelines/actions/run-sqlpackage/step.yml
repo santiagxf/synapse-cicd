@@ -36,30 +36,27 @@ steps:
       {
         Write-Host "##[debug]Runing ${{ parameters.action }} on package $PACKAGE"
 
-        $SQLPACKAGE_ARGS="/action:${{ parameters.action }} `
-                          /sourcefile:${{ parameters.sourcepath }}/$PACKAGE `
-                          /Profile:${{ parameters.profile }} `
-                          /AccessToken:${{ parameters.authtoken }})"
+        $SQLPACKAGE_ARGS=@("/action:${{ parameters.action }}", `
+                           "/sourcefile:${{ parameters.sourcepath }}/$PACKAGE", `
+                           "/Profile:${{ parameters.profile }}", `
+                           "/AccessToken:${{ parameters.authtoken }}")
         
         if ('${{ parameters.databaseServer }}' -ne '')
         {
-          $SQLPACKAGE_ARGS="$SQLPACKAGE_ARGS `
-            /TargetServerName:${{ parameters.databaseServer }}"
+          $SQLPACKAGE_ARGS=@($SQLPACKAGE_ARGS, "/TargetServerName:${{ parameters.databaseServer }}")
         }
 
         if ('${{ parameters.databaseName }}' -ne '')
         {
-          $SQLPACKAGE_ARGS="$SQLPACKAGE_ARGS `
-            /TargetDatabaseName:${{ parameters.databaseName }}"
+          $SQLPACKAGE_ARGS=@($SQLPACKAGE_ARGS, "/TargetDatabaseName:${{ parameters.databaseName }}")
         }
 
         if ('${{ parameters.action }}' -ne 'Publish')
         {
           $PACKAGE_NAME=$PACKAGE.Split('.')[0]
 
-          $SQLPACKAGE_ARGS="$SQLPACKAGE_ARGS `
-            /OutputPath:${{ parameters.outputpath }}/$PACKAGE_NAME.${{ parameters.outputfile }} `
-            /OverwriteFiles:True"
+          $SQLPACKAGE_ARGS=@($SQLPACKAGE_ARGS, "/OutputPath:${{ parameters.outputpath }}/$PACKAGE_NAME.${{ parameters.outputfile }}")
+          $SQLPACKAGE_ARGS=@($SQLPACKAGE_ARGS, "/OverwriteFiles:True")
         }
 
         Write-Host "##[debug]SqlPackage args are '$SQLPACKAGE_ARGS'"
