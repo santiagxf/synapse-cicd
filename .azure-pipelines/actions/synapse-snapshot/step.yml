@@ -26,7 +26,7 @@ parameters:
 
 steps:
 - task: AzurePowerShell@5
-  displayName: 'Identifying proposed changes'
+  displayName: Taking a restore point on target database
   condition: ${{ parameters.condition }}
   inputs:
     azureSubscription: ${{ parameters.creds }}

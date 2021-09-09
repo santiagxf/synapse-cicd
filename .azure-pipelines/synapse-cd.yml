@@ -44,6 +44,7 @@ stages:
         
         - template: actions/run-sqlpackage/step.yml
           parameters:
+            displayName: 'Identifying proposed changes'
             action: 'DeployReport'
             sourcepath: $(Pipeline.Workspace)/${{ variables.ARTIFACT_NAME }}
             outputpath: $(Pipeline.Workspace)/${{ variables.ARTIFACT_NAME }}/${{ variables.ENVIRONMENT_PREFIX }}
@@ -82,6 +83,7 @@ stages:
         
         - template: actions/run-sqlpackage/step.yml
           parameters:
+            displayName: Deploying changes to target
             action: 'Publish'
             sourcepath: $(Pipeline.Workspace)/${{ variables.ARTIFACT_NAME }}
             outputpath: $(Pipeline.Workspace)/${{ variables.ARTIFACT_NAME }}/${{ variables.ENVIRONMENT_PREFIX }}

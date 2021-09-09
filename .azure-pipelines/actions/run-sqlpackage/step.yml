@@ -1,4 +1,7 @@
 parameters:
+- name: displayName
+  type: string
+  default: 'Running SqlPackage'
 - name: action
   type: string
 - name: sourcepath
@@ -25,7 +28,7 @@ parameters:
 
 steps:
 - task: PowerShell@2
-  displayName: 'Identifying proposed changes'
+  displayName: ${{ parameters.displayName }}
   condition: ${{ parameters.condition }}
   inputs:
     targetType: 'inline'
