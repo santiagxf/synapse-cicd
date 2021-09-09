@@ -19,6 +19,7 @@ steps:
   name: validate
   displayName: 'Validating proposed changes'
   inputs:
+    targetType: 'inline'
     script: |
       $files = Get-ChildItem "${{ parameters.sqlpackageReport }}"
       $ignorable = $true

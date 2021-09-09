@@ -24,6 +24,7 @@ steps:
 - task: PowerShell@2
   displayName: 'Identifying proposed changes'
   inputs:
+    targetType: 'inline'
     script: |
       Write-Host "##[debug]Ensuring target folder '${{ parameters.outputpath }}'"
       New-Item -Path '${{ parameters.outputpath }}' -ItemType Directory
