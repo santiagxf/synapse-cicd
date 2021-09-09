@@ -38,7 +38,7 @@ stages:
           parameters:
             creds: ${{ variables.azureServiceConnectionName }}
             resourceUrl: "https://database.windows.net"
-            stepName: "sql-login"
+            stepName: "sqlLogin"
             varName: "sqlToken"
         
         - template: actions/run-sqlpackage/step.yml
@@ -67,7 +67,7 @@ stages:
           parameters:
             creds: ${{ variables.azureServiceConnectionName }}
             resourceUrl: "https://management.core.windows.net/"
-            stepName: "mgnt-login"
+            stepName: "mgntLogin"
             varName: "mgntToken"
 
         - template: actions/synapse-snapshot/step.yml

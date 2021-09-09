@@ -27,7 +27,6 @@ stages:
           parameters:
             creds: ${{ variables.azureServiceConnectionName }}
             resourceUrl: "https://database.windows.net"
-            stepName: "sql-login"
         
         - template: actions/run-sqlpackage/step.yml
           parameters:
