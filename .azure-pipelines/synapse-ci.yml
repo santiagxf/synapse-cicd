@@ -32,7 +32,7 @@ stages:
         - template: actions/run-sqlpackage/step.yml
           parameters:
             action: 'DeployReport'
-            sourcepath: $(Pipeline.Workspace)/${{ variables.ARTIFACTS_PATH }}/*.dacpac
+            sourcepath: $(Pipeline.Workspace)/${{ variables.ARTIFACTS_PATH }}
             outputpath: $(Pipeline.Workspace)/${{ variables.ARTIFACTS_PATH }}
             outputfile: 'deployreport.xml'
             profile: ${{ variables.PROFILE_PATH }}/${{ variables.ENVIRONMENT_PREFIX }}.profile.xml
