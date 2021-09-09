@@ -30,7 +30,7 @@ steps:
       New-Item -Path '${{ parameters.outputpath }}' -ItemType Directory -ErrorAction SilentlyContinue
       
       Write-Host "##[debug]Looking for dacpac files at '${{ parameters.sourcepath }}'"
-      $PACKAGE_PATHS = Get-ChildItem "${{ parameters.sourcepath }}"
+      $PACKAGE_PATHS = Get-ChildItem "${{ parameters.sourcepath }}" | select Name -ExpandProperty Name
 
       ForEach($PACKAGE in $PACKAGE_PATHS)
       {
