@@ -27,7 +27,7 @@ steps:
     targetType: 'inline'
     script: |
       Write-Host "##[debug]Ensuring target folder '${{ parameters.outputpath }}'"
-      New-Item -Path '${{ parameters.outputpath }}' -ItemType Directory
+      New-Item -Path '${{ parameters.outputpath }}' -ItemType Directory -ErrorAction SilentlyContinue
       
       Write-Host "##[debug]Looking for dacpac files at '${{ parameters.sourcepath }}'"
       $PACKAGE_PATHS = Get-ChildItem "${{ parameters.sourcepath }}"
