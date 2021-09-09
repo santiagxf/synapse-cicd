@@ -20,8 +20,8 @@ stages:
       value: rg-dataplatform-dev
 
    jobs:
-    - job: deployment
-      displayName: 'Build'
+    - job: deploy
+      displayName: 'Deployment'
       pool: 
         vmImage: 'windows-latest'
       steps:
