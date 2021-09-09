@@ -27,7 +27,7 @@ steps:
                                 -ResourceUrl "${{ parameters.resourceUrl }}"  `
                                 -ResourceTypeName "${{ parameters.resourceTypeName }}"
         
-      write-host "##vso[task.logdetail]Setting '${{ parameters.varName }}' variable to $resourceToken"
+      write-host "##[debug]Setting '${{ parameters.varName }}' variable"
       write-host "##vso[task.setvariable variable=${{ parameters.varName }};]$resourceToken"
   target:
     settableVariables:

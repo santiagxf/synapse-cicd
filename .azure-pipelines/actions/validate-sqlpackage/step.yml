@@ -37,8 +37,8 @@ steps:
         $errors = $errors -or $packageAnalysis.errors
       }
 
-      write-host "##vso[task.logdetail]Setting 'ignorable' variable to $ignorable"
-      write-host "##vso[task.logdetail]Set the 'errors' variable to $errors"
+      write-host "##[debug]Setting 'ignorable' variable to $ignorable"
+      write-host "##[debug]Set the 'errors' variable to $errors"
       write-host "##vso[task.setvariable variable=ignorable;]$ignorable"
       write-host "##vso[task.setvariable variable=errors;]$errors"
   target:

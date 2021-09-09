@@ -25,15 +25,15 @@ steps:
   displayName: 'Identifying proposed changes'
   inputs:
     script: |
-      Write-Host "##vso[task.logdetail]Ensuring target folder '${{ parameters.outputpath }}'"
+      Write-Host "##[debug]Ensuring target folder '${{ parameters.outputpath }}'"
       New-Item -Path '${{ parameters.outputpath }}' -ItemType Directory
       
-      Write-Host "##vso[task.logdetail]Looking for dacpac files at '${{ parameters.sourcepath }}'"
+      Write-Host "##[debug]Looking for dacpac files at '${{ parameters.sourcepath }}'"
       $PACKAGE_PATHS = Get-ChildItem "${{ parameters.sourcepath }}"
 
       ForEach($PACKAGE in $PACKAGE_PATHS)
       {
-        Write-Host "##vso[task.logdetail]Runing ${{ parameters.action }} on package $PACKAGE"
+        Write-Host "##[debug]Runing ${{ parameters.action }} on package $PACKAGE"
 
         $SQLPACKAGE_ARGS="/action:${{ parameters.action }} `
                           /sourcefile:${{ parameters.sourcepath }}/$PACKAGE `
@@ -61,7 +61,7 @@ steps:
             /OverwriteFiles:True"
         }
 
-        Write-Host "##vso[task.logdetail]SqlPackage args are '$SQLPACKAGE_ARGS'"
+        Write-Host "##[debug]SqlPackage args are '$SQLPACKAGE_ARGS'"
         & "C:\Program Files\Microsoft SQL Server\150\DAC\bin\SqlPackage.exe" $SQLPACKAGE_ARGS
       }
 

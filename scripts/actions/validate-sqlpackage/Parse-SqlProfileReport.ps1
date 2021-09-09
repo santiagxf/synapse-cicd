@@ -42,7 +42,7 @@ function Log-Debug($args){
         Write-Host "::debug::$args"
     }
     else {
-        Write-Host "##vso[task.logdetail] $args"
+        Write-Host "##[debug] $args"
     }
 }
 

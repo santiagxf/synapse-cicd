@@ -20,10 +20,10 @@ param
 
 function Log-Debug($args){
     if ($Platform -eq "github") {
-        Log-Debug -args "$args"
+        Write-Host "::debug::$args"
     }
     else {
-        Write-Host "##vso[task.logdetail] $args"
+        Write-Host "##[debug] $args"
     }
 }
 
