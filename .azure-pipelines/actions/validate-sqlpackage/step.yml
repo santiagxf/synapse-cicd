@@ -21,6 +21,9 @@ steps:
   inputs:
     targetType: 'inline'
     script: |
+      Write-Host "##[debug]Ensuring target folder '${{ parameters.outputpath }}'"
+      New-Item -Path '${{ parameters.outputpath }}' -ItemType Directory -ErrorAction SilentlyContinue
+
       $files = Get-ChildItem "${{ parameters.sqlpackageReport }}"
       $ignorable = $true
       $errors = $false
