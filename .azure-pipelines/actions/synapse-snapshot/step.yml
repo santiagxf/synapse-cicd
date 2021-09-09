@@ -23,7 +23,7 @@ parameters:
 - name: creds
   type: string
 - name: condition
-  type: 
+  type: boolean
   default: true
 
 steps:

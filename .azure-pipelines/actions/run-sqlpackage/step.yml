@@ -20,7 +20,7 @@ parameters:
 - name: outputfile
   default: 'deployreport.xml' 
 - name: condition
-  type: 
+  type: boolean
   default: true
 
 steps:
