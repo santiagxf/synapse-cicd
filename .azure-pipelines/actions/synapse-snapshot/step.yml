@@ -22,11 +22,15 @@ parameters:
   default: true
 - name: creds
   type: string
+- name: condition
+  type: 
+  default: true
 
 steps:
 - task: AzurePowerShell@5
   displayName: 'Identifying proposed changes'
-  azurePowerShellVersion: LatestVersion
+  azurePowerShellVersion: 
+  condition: ${{ parameters.condition }}
   inputs:
     azureSubscription: ${{ parameters.creds }}
     ScriptPath: 'scripts/actions/synapse-snapshot/New-AzSynapseRestorePoint.ps1'

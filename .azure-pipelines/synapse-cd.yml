@@ -64,20 +64,20 @@ stages:
           artifact: 'deploy'
         
         - template: actions/azure-resource-login/step.yml
-          condition: eq(variables['validate.ignorable'], false)
           parameters:
             creds: ${{ variables.azureServiceConnectionName }}
             resourceUrl: "https://management.core.windows.net/"
             stepName: "mgntLogin"
             varName: "mgntToken"
+            condition: eq(variables['validate.ignorable'], false)
 
         - template: actions/synapse-snapshot/step.yml
-          condition: eq(variables['validate.ignorable'], false)
           parameters:
             resourceGroup: ${{ variables.RESOURCE_GROUP }}
             profile: ${{ variables.PROFILE_PATH }}/${{ variables.ENVIRONMENT_PREFIX }}.profile.xml
             authtoken: $(mgntToken)
             synapseWorkspace: true
+            condition: eq(variables['validate.ignorable'], false)
         
         - template: actions/run-sqlpackage/step.yml
           parameters:

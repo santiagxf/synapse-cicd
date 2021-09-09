@@ -19,10 +19,14 @@ parameters:
   default: .
 - name: outputfile
   default: 'deployreport.xml' 
+- name: condition
+  type: 
+  default: true
 
 steps:
 - task: PowerShell@2
   displayName: 'Identifying proposed changes'
+  condition: ${{ parameters.condition }}
   inputs:
     targetType: 'inline'
     script: |
