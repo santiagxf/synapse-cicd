@@ -55,6 +55,7 @@ stages:
           parameters:
             environment: ${{ variables.ENVIRONMENT_PREFIX }}
             sqlpackageReport: $(Pipeline.Workspace)/${{ variables.ARTIFACT_NAME }}/${{ variables.ENVIRONMENT_PREFIX }}/*.xml
+            outputpath: $(Pipeline.Workspace)
             outputfile: '${{ variables.ENVIRONMENT_PREFIX }}.deployreport.MD'
             haltonerrors: true
         

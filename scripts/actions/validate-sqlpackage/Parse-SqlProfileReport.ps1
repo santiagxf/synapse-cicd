@@ -70,6 +70,7 @@ function Log-Error($args, $filename){
     }
 }
 
+Log-Debug -args "Writing report for $Environment at $OutputFilePath"
 
 Write-Debug 'Creating report header'
 $Environment = $Environment.ToUpper()
