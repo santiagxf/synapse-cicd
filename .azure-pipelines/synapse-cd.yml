@@ -74,6 +74,7 @@ stages:
         - template: actions/synapse-snapshot/step.yml
           parameters:
             resourceGroup: ${{ variables.RESOURCE_GROUP }}
+            creds: ${{ variables.azureServiceConnectionName }}
             profile: ${{ variables.PROFILE_PATH }}/${{ variables.ENVIRONMENT_PREFIX }}.profile.xml
             authtoken: $(mgntToken)
             synapseWorkspace: true

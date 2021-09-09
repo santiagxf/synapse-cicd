@@ -1,8 +1,6 @@
 parameters:
 - name: resourceGroup
   type: string
-- name: sourcepath
-  type: string
 - name: profile
   type: string
   default: ''
