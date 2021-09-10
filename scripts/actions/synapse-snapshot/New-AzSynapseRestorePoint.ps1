@@ -66,7 +66,7 @@ if ($SynapseWorkspace)
         'Authorization'='Bearer ' + $AuthToken 
     }
     $payload = @{
-        'restorePointLabel'='$Label'
+        'restorePointLabel'=$Label
     }
     
     Log-Debug -args "Calling $requestUrl over POST"
