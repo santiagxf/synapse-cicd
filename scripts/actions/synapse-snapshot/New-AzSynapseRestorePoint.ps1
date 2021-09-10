@@ -63,7 +63,7 @@ if ($SynapseWorkspace)
     $requestUrl = "https://management.azure.com/subscriptions/$subscriptionId/resourceGroups/$ResourceGroup/providers/Microsoft.Synapse/workspaces/$targetResourceName/sqlPools/$targetDatabaseName/restorePoints?api-version=$ApiVersion"
     $headers = @{
         'Content-Type'='application/json';
-        'Authorization'='Bearer $AuthToken' 
+        'Authorization'='Bearer ' + $AuthToken 
     }
     $payload = @{
         'restorePointLabel'='$Label'
