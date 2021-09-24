@@ -38,7 +38,7 @@ jobs:
       
       - id: deploy-report
         name: Identifying proposed changes
-        uses: ./.github/actions/run-sqlpackage
+        uses: Azure/run-sqlpackage-action@v1.0.0
         with:
           action: 'DeployReport'
           sourcepath: $PWD/${ARTIFACTS_PATH}
