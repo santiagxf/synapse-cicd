@@ -31,7 +31,7 @@ jobs:
   
       - id: sql-login
         name: Adquiring SQL Access Token
-        uses: ./.github/actions/azure-resource-login
+        uses: Azure/azure-resource-login-action@v1.0.0
         with:
           creds: ${{secrets.AZURE_CREDENTIALS}}
           resource-url: "https://database.windows.net"
