@@ -63,7 +63,7 @@ function Log-Warning($args, $filename){
 
 function Log-Error($args, $filename){
     if ($Platform -eq "github") {
-        Write-Host "::error::$file=$filename::$args"
+        Write-Host "::error:: file=$filename::$args"
     }
     else {
         Write-Host "##vso[task.logissue type=error] $args"
